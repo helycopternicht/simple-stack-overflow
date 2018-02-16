@@ -1,11 +1,9 @@
 package com.elazarev.domain;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
@@ -24,7 +22,7 @@ public class Question {
     private User author;
 
     @Column(name = "create_date", nullable = false)
-    private LocalDateTime createDate;
+    private Date createDate;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -43,7 +41,22 @@ public class Question {
     @JoinTable(name = "user_subscription", joinColumns = @JoinColumn(name = "question_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> subscribers = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question", fetch = FetchType.EAGER)
+    private Set<Answer> answers = new HashSet<>();
+
+    @Transient
+    private boolean hasAnswer;
+
     public Question() {
+    }
+
+    public boolean hasAnswer() {
+        for (Answer a : answers) {
+            if (a.getSolution()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Long getId() {
@@ -62,11 +75,11 @@ public class Question {
         this.author = author;
     }
 
-    public LocalDateTime getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
@@ -108,5 +121,13 @@ public class Question {
 
     public void setSubscribers(List<User> subscribers) {
         this.subscribers = subscribers;
+    }
+
+    public Set<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(Set<Answer> answers) {
+        this.answers = answers;
     }
 }

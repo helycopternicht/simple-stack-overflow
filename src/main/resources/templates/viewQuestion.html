@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/2005/Atom">
 <head>
-    <title>Bootstrap Example</title>
+    <title th:text="${question.title}"></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -15,95 +15,79 @@
             padding: 20px;
             margin-top: 20px;
         }
+
+        /*todo: перенести стили в отдельный файл*/
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-    <span class="navbar-text">Stack overflow</span>
-    <ul class="nav navbar-nav">
-        <li><a href="#">Link</a></li>
-        <li><a href="#">Link</a></li>
-    </ul>
+    <nav class="navbar navbar-inverse">
+        <span class="navbar-text">Stack overflow</span>
+        <ul class="nav navbar-nav">
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+        </ul>
+    </nav>
 
-</nav>
+    <div class="container">
+        <div id="question">
+            <h1 th:text="${question.title}"></h1>
+            <h4>
+                <a th:href="@{/users/{author}(author=${question.author.login})}" th:text="'@' + ${question.author.login}"></a>
+                <span class="gelycon gelycon-time" th:text="${#dates.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
+            </h4>
+            <h5>
+                <span class="label label-primary" th:each="tag : ${question.tags}" th:text="${tag.name}"></span>
+            </h5>
 
-<div class="container">
-    <div id="question">
-        <h1>Что за ошибка в sql?</h1>
-        <h4><span class="glyphicon glyphicon-time"></span> Author: User Sep 24, 2015 </h4>
-        <h5>
-            <span class="label label-primary">sql</span>
-        </h5>
-
-        <p>
-            Здравствуйте. У меня очень странную ошибку выдает MySQL.
-            При попытке выполнить запрос из php скрипта возвращает следующее:
-            billing > [ERROR]:[ID] > 608
-            billing > [ERROR]:[TYPE] > db
-            billing > [ERROR]:[CLASS] > error
-            billing > [ERROR]:[MESSAGE] > SQL query execution failed
-            billing > [SQL_ERROR]:[SQL] > INSERT INTO `mls_lottery_tickets` SET `id_lottery` = '2001', `id_draw` = '19', `id_user` = '1', `id_order` = '12', `ticket` = '140', `cost_ticket` = '0.75';
-            INSERT INTO `mls_lottery_tickets` SET `id_lottery` = '2001', `id_draw` = '19', `id_user` = '1', `id_order` = '12', `ticket` = '141', `cost_ticket` = '0.75';
-            INSERT INTO `mls_lottery_tickets` SET `id_lottery` = '2001', `id_draw` = '19', `id_user` = '1', `id_order` = '12', `ticket` = '145', `cost_ticket` = '0.75';
-            INSERT INTO `mls_lottery_tickets` SET `id_lottery` = '2001', `id_draw` = '19', `id_user` = '1', `id_order` = '12', `ticket` = '155', `cost_ticket` = '0.75'
-            billing > [SQL_ERROR]:[MESSAGE] > You have an error in your SQL syntax; check the manual that corr
-        </p>
-        <button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Subscribe | 10</button>
-    </div>
-
-    <br/>
-    <h5>2 Answers</h5>
-    <hr/>
-
-    <div class="row">
-
-        <div class="comment">
-            <div class="col-sm-2 text-center">
-                <img src="https://avatars.mds.yandex.net/get-pdb/49816/76984ce4-b405-44f8-ae4e-c77de11ae1d6/s800" class="img-circle" height="65" width="65" alt="Avatar">
-            </div>
-
-            <div class="col-sm-10">
-                <h4>Anja <small>Sep 29, 2015, 9:12 PM</small></h4>
-                <p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <button class="btn btn-success"><span class="glyphicon glyphicon-thumbs-up"></span> Like | 10</button>
-                <br>
-            </div>
+            <p th:text="${question.description}"></p>
+            <button type="button" class="btn btn-default btn-lg" th:text="'Subscribe | ' + ${question.subscribers.size()}">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Subscribe | 10
+            </button>
         </div>
 
-        <div class="comment">
-            <div class="col-sm-2 text-center">
-                <img src="https://avatars.mds.yandex.net/get-pdb/49816/76984ce4-b405-44f8-ae4e-c77de11ae1d6/s800" class="img-circle" height="65" width="65" alt="Avatar">
-            </div>
-
-            <div class="col-sm-10">
-                <h4>Anja <small>Sep 29, 2015, 9:12 PM</small></h4>
-                <p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <button class="btn btn-success "><span class="glyphicon glyphicon-thumbs-up"></span> Like | 2</button>
-                <br>
-            </div>
-        </div>
-
+        <br/>
+        <h5 th:text="${question.answers.size()} + ' answers'"></h5>
         <hr/>
 
+        <div class="row">
 
-        <div class="col-sm-2 text-center">
-            <img src="https://kwork.ru/pics/t3/85/109231-1.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-        </div>
-        <form role="form" class="col-sm-10">
-            <h4>Youre answer</h4>
-            <div class="form-group">
-                <textarea class="form-control" rows="3" required=""></textarea>
+            <div class="answer" th:each="answer : ${question.answers}">
+                <div class="col-sm-2 text-center">
+                    <img th:src="${answer.author.photoUrl}" class="img-circle" height="65" width="65" alt="Avatar">
+                </div>
+
+                <div class="col-sm-10">
+                    <h4>
+                        <a th:href="@{/users/{author}(author=${answer.author.login})}" th:text="'@' + ${answer.author.login}"></a>
+                        <small th:text="${#dates.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></small>
+                    </h4>
+                    <p th:text="${answer.text}"></p>
+
+                    <button class="btn btn-success" th:text="'Like | ' + ${answer.liked.size()}"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                    <br>
+                </div>
             </div>
-            <button type="submit" class="btn btn-info">Submit</button>
-        </form>
 
+            <hr/>
+
+            <div class="col-sm-2 text-center">
+                <img src="https://kwork.ru/pics/t3/85/109231-1.jpg" class="img-circle" height="65" width="65" alt="Avatar">
+            </div>
+            <form role="form" class="col-sm-10">
+                <h4>Youre answer</h4>
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" required=""></textarea>
+                </div>
+                <button type="submit" class="btn btn-info">Submit</button>
+            </form>
+
+        </div>
     </div>
-</div>
 
-<footer class="container-fluid bg-4 text-center">
-    <p>Bootstrap Theme Made By <a href="https://www.w3schools.com">www.w3schools.com</a></p>
-</footer>
+    <footer class="container-fluid bg-4 text-center">
+        <p>Learning project.</p>
+    </footer>
 
 
 </body>
