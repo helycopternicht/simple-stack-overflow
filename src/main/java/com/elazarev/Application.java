@@ -25,18 +25,8 @@ import javax.persistence.EntityManager;
 @Component
 public class Application {
 
-    @Autowired
-    private UserService userService;
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-    }
-
-    @PostConstruct
-    public void otot() {
-
-        Page<User> page = userService.doWork(1);
-        page.forEach(user -> System.out.println(user));
     }
 
 }

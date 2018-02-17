@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
@@ -22,8 +23,7 @@ public class UserService {
     @Autowired
     private UserRepository repo;
 
-    public Page<User> doWork(int page) {
-         return repo.findAll(PageRequest.of(0, 10));
+    public Optional<User> findById(Long id) {
+        return repo.findById(id);
     }
-
 }

@@ -1,6 +1,7 @@
 package com.elazarev.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
@@ -14,13 +15,20 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "image_url")
     private String imageUrl;
 
+    @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
+    private Set<Question> questions;
+
     public Tag() {
+    }
+
+    public Tag(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -45,5 +53,13 @@ public class Tag {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
     }
 }
