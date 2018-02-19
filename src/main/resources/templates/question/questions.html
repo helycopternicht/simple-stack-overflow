@@ -53,37 +53,11 @@
         </div>
         <hr/>
 
-
-        <!--<ul class="pagination">-->
-
-        <!--<li class="disabled" th:if="${currentIndex == 1}"><a href="#">&gt;</a></li>-->
-        <!--<li class="disabled" th:if="${currentIndex == 1}"><a href="#">&gt;&gt;</a></li>-->
-
-        <!--<li><a th:href="@{/questions/pages/1}" th:if="${not currentIndex == 1}">&lt;&lt;</a></li>-->
-        <!--<li><a th:href="@{/questions/pages/{page(page=currentIndex - 1)}}" th:if="${not currentIndex == 1}">&lt;</a>-->
-        <!--</li>-->
-
-        <!--<li th:each="pageNum : ${pageIndexes}" class="active"><a th:text="${pageNum}"></a></li>-->
-
-
-        <!--<li class="disabled" th:if="${currentIndex == paginator.totalPages}"><a href="#">&gt;</a></li>-->
-        <!--<li class="disabled" th:if="${currentIndex == paginator.totalPages}"><a href="#">&gt;&gt;</a></li>-->
-
-
-        <!--<li><a href="@{/questions/pages/{page}(page=currentIndex + 1)}"-->
-        <!--th:if="${not currentIndex == paginator.totalPages}">&gt;</a></li>-->
-        <!--<li><a href="@{/questions/pages/{page}(page=paginator.totalPages)}"-->
-        <!--th:if="${not currentIndex == paginator.totalPages}">&gt;&gt;</a></li>-->
-        <!--</ul>-->
-
-
-        <!--<ul class="pagination">-->
-        <!--<li><a href="#">1</a></li>-->
-        <!--<li><a href="#">2</a></li>-->
-        <!--<li><a href="#">3</a></li>-->
-        <!--<li><a href="#">4</a></li>-->
-        <!--<li><a href="#">5</a></li>-->
-        <!--</ul>-->
+        <ul class="pagination">
+            <li th:if="${paginator.hasPrevious()}"><a th:href="@{/questions/page/{num}(num=${paginator.getNumber()})}">Prev</a></li>
+            <li><a th:text="${paginator.getNumber() + 1}"></a></li>
+            <li th:if="${paginator.hasNext()}"><a th:href="@{/questions/page/{num}(num=${paginator.getNumber() + 2})}">Next</a></li>
+        </ul>
 
     </div>
 
