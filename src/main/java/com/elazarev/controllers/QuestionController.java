@@ -1,11 +1,8 @@
 package com.elazarev.controllers;
 
 import com.elazarev.domain.Question;
-import com.elazarev.domain.Tag;
 import com.elazarev.domain.User;
-import com.elazarev.repository.TagRepository;
 import com.elazarev.service.QuestionService;
-import com.elazarev.service.TagsService;
 import com.elazarev.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,19 +40,9 @@ public class QuestionController {
             return "forward:/error";
         }
 
-//        int currentPage = data.getNumber() + 1;
-//        int begin = Math.max(1, currentPage - 2);
-//        int end = Math.min(begin + 2, data.getTotalPages());
-//        List<Integer> pageIndexes = new ArrayList<>();
-//        for (int i = begin; i <= end ; i++) {
-//            pageIndexes.add(i);
-//        }
-
         model.addAttribute("paginator", data);
-//        model.addAttribute("pageIndexes", pageIndexes);
-//        model.addAttribute("currentIndex", currentPage);
 
-        return "questions";
+        return "/question/questions";
     }
 
     @GetMapping("/{id}")
@@ -66,7 +53,7 @@ public class QuestionController {
         }
 
         model.addAttribute("question", question.get());
-        return "viewQuestion";
+        return "/question/viewQuestion";
     }
 
     @GetMapping("/add")
@@ -88,7 +75,7 @@ public class QuestionController {
         q.setDescription(description);
         q.getSubscribers().add(user.get());
         long id = questionService.saveWithTags(q, stringTags);
-        return "redirect:/questions/" + id;
+        return "redirect:/question/questions/" + id;
     }
 
 }

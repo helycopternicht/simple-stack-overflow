@@ -1,17 +1,17 @@
 package com.elazarev.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
  * @since 14.02.18
  */
 @Entity(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,8 +72,38 @@ public class User {
         this.login = login;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return !baned;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !baned;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return !baned;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !baned;
     }
 
     public void setPassword(String password) {
