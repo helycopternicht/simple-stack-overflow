@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -88,14 +89,20 @@ public class QuestionController {
     }
 
     @PostMapping("/answer")
-    public String addAnswer(@RequestParam("text") String text, @RequestParam("question_id") Long id) {
+    public String addAnswer(@RequestParam("text") String text, @RequestParam("question_id") Long id, HttpServletResponse resp) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findById(((User)auth.getPrincipal()).getId()).get();
 
+        Optional<Question> question = questionService.getById(id);
+        if (!question.isPresent() || text.isEmpty()) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return "redirect:/error";
+        }
+
         Answer a = new Answer();
         a.setAuthor(user);
-        a.setQuestion(questionService.getById(id).get());
+        a.setQuestion(question.get());
         a.setSolution(false);
         a.setText(text);
 
