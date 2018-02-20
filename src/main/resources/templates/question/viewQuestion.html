@@ -74,11 +74,12 @@
             <div class="col-sm-2 text-center">
                 <img src="https://kwork.ru/pics/t3/85/109231-1.jpg" class="img-circle" height="65" width="65" alt="Avatar">
             </div>
-            <form role="form" class="col-sm-10">
+            <form role="form" class="col-sm-10" method="post" th:action="@{/questions/answer}">
                 <h4>Youre answer</h4>
                 <div class="form-group">
-                    <textarea class="form-control" rows="3" required=""></textarea>
+                    <textarea class="form-control" rows="3" required="" name="text"></textarea>
                 </div>
+                <input type="hidden" name="question_id" th:value="${question.id}">
                 <button type="submit" class="btn btn-info">Submit</button>
             </form>
 

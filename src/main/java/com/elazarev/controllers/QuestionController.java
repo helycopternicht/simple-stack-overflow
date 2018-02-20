@@ -1,7 +1,9 @@
 package com.elazarev.controllers;
 
+import com.elazarev.domain.Answer;
 import com.elazarev.domain.Question;
 import com.elazarev.domain.User;
+import com.elazarev.repository.AnswerRepository;
 import com.elazarev.service.QuestionService;
 import com.elazarev.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class QuestionController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AnswerRepository anserverRepo;
+
     @GetMapping(path = {"/page/{page}", ""})
     public String allQuestions(@PathVariable Optional<Integer> page, Model model) {
 
@@ -47,7 +52,7 @@ public class QuestionController {
         return "/question/questions";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/show/{id}")
     public String viewQuestion(@PathVariable Long id, Model model) throws Exception {
         Optional<Question> question = questionService.getById(id);
         if (!question.isPresent()) {
@@ -68,8 +73,8 @@ public class QuestionController {
                                  @RequestParam("tags") String stringTags,
                                  @RequestParam("description") String description) {
 
+        // todo: add class to avoid dublicate code
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         User user = userService.findById(((User)auth.getPrincipal()).getId()).get();
 
         Question q = new Question();
@@ -79,7 +84,23 @@ public class QuestionController {
         q.setDescription(description);
         q.getSubscribers().add(user);
         long id = questionService.saveWithTags(q, stringTags);
-        return "redirect:/questions/" + id;
+        return "redirect:/questions/show/" + id;
+    }
+
+    @PostMapping("/answer")
+    public String addAnswer(@RequestParam("text") String text, @RequestParam("question_id") Long id) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findById(((User)auth.getPrincipal()).getId()).get();
+
+        Answer a = new Answer();
+        a.setAuthor(user);
+        a.setQuestion(questionService.getById(id).get());
+        a.setSolution(false);
+        a.setText(text);
+
+        anserverRepo.save(a);
+        return "redirect:/questions/show/" + id;
     }
 
 }
