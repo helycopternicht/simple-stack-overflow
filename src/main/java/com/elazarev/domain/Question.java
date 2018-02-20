@@ -1,8 +1,6 @@
 package com.elazarev.domain;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**

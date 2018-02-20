@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -31,7 +31,7 @@
 </nav>
 
 <div class="container">
-    <form class="new-form" action="" method="post">
+    <form class="new-form" th:action="@{/questions/add}" method="post">
         <div class="form-group">
             <label for="title">Question title</label>
             <input type="text" class="form-control" id="title" placeholder="Title" name="title">

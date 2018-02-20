@@ -1,7 +1,12 @@
 package com.elazarev.domain;
 
+import com.elazarev.security.RegisterUserForm;
+import com.elazarev.security.WebSecurityConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.*;
@@ -56,6 +61,18 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public static User constructUser(RegisterUserForm userForm, PasswordEncoder encoder) {
+        User user = new User();
+        user.setLogin(userForm.getLogin());
+        user.setPassword(encoder.encode(userForm.getPassword()));
+        user.setEmail(userForm.getEmail());
+        user.setFirstName(userForm.getFirstName());
+        user.setLastName(userForm.getLastName());
+        user.setAbout(userForm.getAbout());
+        user.setBaned(false);
+        return user;
+    }
+
     public Long getId() {
         return id;
     }
@@ -74,7 +91,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return roles;
     }
 
     public String getPassword() {

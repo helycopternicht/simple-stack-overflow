@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:labelth="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+
+        form {
+            width: 500px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <form th:action="@{/registration}" th:object="${registerUserForm}" method="post">
+        <div class="form-group">
+            <label th:for="login">Login</label>
+            <input type="text" class="form-control" placeholder="Login" th:field="*{login}">
+            <span class="warning" th:errors="*{login}"></span>
+            <span class="warning" th:if="${incorrectLogin}">Login already in use. Please take another login</span>
+        </div>
+        <div class="form-group">
+            <label th:for="password">Password</label>
+            <input type="password" class="form-control" placeholder="Password" th:field="*{password}">
+            <span class="warning" th:errors="*{password}"></span>
+        </div>
+
+        <div class="form-group">
+            <label th:for="email">Email address</label>
+            <input type="email" class="form-control" placeholder="Email" th:field="*{email}">
+        </div>
+
+        <div class="form-group">
+            <label for="firstname">First name</label>
+            <input type="text" class="form-control" id="firstname" placeholder="First name" name="firstName">
+        </div>
+        <div class="form-group">
+            <label for="lastname">Last name</label>
+            <input type="text" class="form-control" id="lastname" placeholder="Last name" name="LastName">
+        </div>
+
+        <div class="form-group">
+            <label for="about">About you</label>
+            <textarea class="form-control" rows="3" id="about" name="about"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+
+</div>
+
+</body>
+</html>

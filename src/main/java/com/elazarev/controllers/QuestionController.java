@@ -6,6 +6,8 @@ import com.elazarev.service.QuestionService;
 import com.elazarev.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +60,7 @@ public class QuestionController {
 
     @GetMapping("/add")
     public String showAddForm() {
-        return "newQuestion";
+        return "/question/newQuestion";
     }
 
     @PostMapping("/add")
@@ -66,16 +68,18 @@ public class QuestionController {
                                  @RequestParam("tags") String stringTags,
                                  @RequestParam("description") String description) {
 
-        Optional<User> user = userService.findById(1L);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = userService.findById(((User)auth.getPrincipal()).getId()).get();
 
         Question q = new Question();
-        q.setAuthor(user.get());
+        q.setAuthor(user);
         q.setTitle(title);
         q.setClosed(false);
         q.setDescription(description);
-        q.getSubscribers().add(user.get());
+        q.getSubscribers().add(user);
         long id = questionService.saveWithTags(q, stringTags);
-        return "redirect:/question/questions/" + id;
+        return "redirect:/questions/" + id;
     }
 
 }
