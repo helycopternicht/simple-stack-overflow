@@ -5,7 +5,7 @@
     <title>Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-wysiwyg/0.3.3/bootstrap3-wysihtml5.min.css" >
 
@@ -22,37 +22,29 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-    <span class="navbar-text">Stack overflow</span>
-    <ul class="nav navbar-nav">
-        <li><a href="#">Link</a></li>
-        <li><a href="#">Link</a></li>
-    </ul>
-</nav>
+    <nav th:replace="~{/layout :: header}"></nav>
 
-<div class="container">
-    <form class="new-form" th:action="@{/questions/add}" method="post">
-        <div class="form-group">
-            <label for="title">Question title</label>
-            <input type="text" class="form-control" id="title" placeholder="Title" name="title">
-        </div>
-        <div class="form-group">
-            <label for="tags">Tags</label>
-            <input type="text" class="form-control" id="tags" placeholder="Tags" name="tags" data-role="tagsinput">
-        </div>
+    <div class="container">
+        <form class="new-form" th:action="@{/questions/add}" method="post">
+            <div class="form-group">
+                <label for="title">Question title</label>
+                <input type="text" class="form-control" id="title" placeholder="Title" name="title">
+            </div>
+            <div class="form-group">
+                <label for="tags">Tags</label>
+                <input type="text" class="form-control" id="tags" placeholder="Tags" name="tags" data-role="tagsinput">
+            </div>
 
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea class="form-control" rows="5" name="description" id="description" placeholder="Description"></textarea>
-        </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" rows="5" name="description" id="description" placeholder="Description"></textarea>
+            </div>
 
-        <button type="submit" class="btn btn-default">Submit</button>
-    </form>
-</div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
 
-<footer class="container-fluid bg-4 text-center">
-    <p>Learning project.</p>
-</footer>
+    <footer  th:replace="~{/layout :: footer}"></footer>
 
 <script type="text/javascript">
     $('textarea').wysihtml5();

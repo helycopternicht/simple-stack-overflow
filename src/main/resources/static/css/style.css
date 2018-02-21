@@ -1,0 +1,18 @@
+.bg-4 {
+    background-color: #2f2f2f;
+    color: #ffffff;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.my-container {
+    margin-bottom: 155px;
+}
+
+.my-footer {
+    position: fixed;
+    height: 155px;
+    bottom: 0;
+    width: 100%;
+    background-color: #2f2f2f;
+}
