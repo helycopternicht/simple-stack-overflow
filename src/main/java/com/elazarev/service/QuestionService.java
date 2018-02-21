@@ -4,7 +4,6 @@ import com.elazarev.domain.Question;
 import com.elazarev.domain.Tag;
 import com.elazarev.domain.User;
 import com.elazarev.repository.QuestionRepository;
-import com.elazarev.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

@@ -1,6 +1,7 @@
 package com.elazarev.domain;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -20,7 +21,8 @@ public class Question {
     private User author;
 
     @Column(name = "create_date", nullable = false)
-    private Date createDate;
+    @GeneratedValue
+    private LocalDateTime createDate;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -33,6 +35,7 @@ public class Question {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "question_tags", joinColumns = @JoinColumn(name = "question_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @OrderBy("id asc")
     private Set<Tag> tags = new TreeSet<>(new TagComparator());
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -40,6 +43,7 @@ public class Question {
     private List<User> subscribers = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question", fetch = FetchType.EAGER)
+    @OrderBy("createDate asc")
     private Set<Answer> answers = new TreeSet<>(new AnswerComparator());
 
     public Question() {
@@ -68,14 +72,6 @@ public class Question {
 
     public void setAuthor(User author) {
         this.author = author;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
     }
 
     public String getTitle() {
@@ -124,6 +120,14 @@ public class Question {
 
     public void setAnswers(Set<Answer> answers) {
         this.answers = answers;
+    }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
     }
 
     static class AnswerComparator implements Comparator<Answer> {

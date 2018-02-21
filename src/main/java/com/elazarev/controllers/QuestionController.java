@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 
 /**
@@ -55,10 +57,18 @@ public class QuestionController {
     }
 
     @GetMapping("/show/{id}")
-    public String viewQuestion(@PathVariable Long id, Model model) throws Exception {
+    public String viewQuestion(@PathVariable Long id, Model model, Principal principal) throws Exception {
         Optional<Question> question = questionService.getById(id);
         if (!question.isPresent()) {
             throw new Exception("Resource not found");
+        }
+
+
+        if (principal != null) {
+            User user = userService.findUserByLogin(principal.getName());
+            if (user.equals(question.get().getAuthor())) {
+                model.addAttribute("isYour", true);
+            }
         }
 
         model.addAttribute("question", question.get());
@@ -83,6 +93,7 @@ public class QuestionController {
         q.setAuthor(user);
         q.setTitle(title);
         q.setClosed(false);
+        q.setCreateDate(LocalDateTime.now());
         q.setDescription(description);
         q.getSubscribers().add(user);
         long id = questionService.saveWithTags(q, stringTags);
@@ -106,6 +117,7 @@ public class QuestionController {
         a.setQuestion(question.get());
         a.setSolution(false);
         a.setText(text);
+        a.setCreateDate(LocalDateTime.now());
 
         answerService.save(a);
         return "redirect:/questions/show/" + id;
@@ -128,7 +140,10 @@ public class QuestionController {
     }
 
     @PostMapping("/answer/like")
-    public String like(@RequestParam("answer_id") Long id, @RequestParam("question_id") Long question_id, Principal principal, HttpServletResponse resp) {
+    public String like(@RequestParam("answer_id") Long id,
+                       Principal principal,
+                       HttpServletResponse resp) {
+
         User user = userService.findUserByLogin(principal.getName());
         Optional<Answer> optionalAnswer = answerService.findById(id);
         if (!optionalAnswer.isPresent()) {
@@ -150,6 +165,29 @@ public class QuestionController {
             answerService.save(answer);
         }
 
-        return "redirect:/questions/show/" + question_id;
+        return "redirect:/questions/show/" + answer.getQuestion().getId();
     }
+
+    @PostMapping("/answer/solution")
+    public String solution(@RequestParam("answer_id") Long id, HttpServletResponse resp, Principal principal) {
+
+        User user = userService.findUserByLogin(principal.getName());
+
+        Optional<Answer> answer = answerService.findById(id);
+        if (!answer.isPresent()) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return "redirect:/error";
+        }
+
+        Question question = answer.get().getQuestion();
+        if (!user.equals(question.getAuthor())) {
+            resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            return "redirect:/error";
+        }
+
+        answer.get().setSolution(true);
+        answerService.save(answer.get());
+        return "redirect:/questions/show/" + question.getId();
+    }
+
 }

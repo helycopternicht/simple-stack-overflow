@@ -25,7 +25,7 @@
                         <span class="glyphicon glyphicon-ok" th:if="${question.hasAnswer()}"></span></h2>
                     <h5>
                         <a th:href="@{/users/{author}(author=${question.author.login})}" th:text="'@' + ${question.author.login}"></a>
-                        <span class="gelycon gelycon-time" th:text="${#dates.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
+                        <span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
                     </h5>
                     <h5>
                         <span class="label label-primary" th:each="tag: ${question.tags}" th:text="${tag.name}"></span>

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title th:text="${question.title}"></title>
     <meta charset="utf-8">
@@ -18,7 +20,7 @@
             <h1 th:text="${question.title}"></h1>
             <h4>
                 <a th:href="@{/users/{author}(author=${question.author.login})}" th:text="'@' + ${question.author.login}"></a>
-                <span class="gelycon gelycon-time" th:text="${#dates.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
+                <span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
             </h4>
             <h5>
                 <span class="label label-primary" th:each="tag : ${question.tags}" th:text="${tag.name}"></span>
@@ -48,13 +50,18 @@
                 <div class="col-sm-10">
                     <h4>
                         <a th:href="@{/users/{author}(author=${answer.author.login})}" th:text="'@' + ${answer.author.login}"></a>
-                        <small th:text="${#dates.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></small>
+                        <span th:text="${#temporals.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
+                        <span class="glyphicon glyphicon-ok" th:if="${answer.getSolution()}"></span>
                     </h4>
                     <p th:text="${answer.text}"></p>
                     <form th:action="@{/questions/answer/like}" method="post">
                         <input type="hidden" th:value="${answer.id}" name="answer_id">
                         <input type="hidden" th:value="${question.id}" name="question_id">
-                        <button class="btn btn-success" th:text="'Like | ' + ${answer.liked.size()}"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                        <button class="btn btn-info" th:text="'Like | ' + ${answer.liked.size()}"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                    </form>
+                    <form th:action="@{/questions/answer/solution}" method="post" th:if="${isYour}">
+                        <input type="hidden" name="answer_id" th:value="${answer.id}">
+                        <button type="submit" class="btn btn-success">Solution!</button>
                     </form>
                     <br>
                 </div>
