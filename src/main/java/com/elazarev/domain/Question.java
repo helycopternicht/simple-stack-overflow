@@ -33,14 +33,14 @@ public class Question {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "question_tags", joinColumns = @JoinColumn(name = "question_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private Set<Tag> tags = new HashSet<>();
+    private Set<Tag> tags = new TreeSet<>(new TagComparator());
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_subscription", joinColumns = @JoinColumn(name = "question_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> subscribers = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question", fetch = FetchType.EAGER)
-    private Set<Answer> answers = new HashSet<>();
+    private Set<Answer> answers = new TreeSet<>(new AnswerComparator());
 
     public Question() {
     }
@@ -124,5 +124,33 @@ public class Question {
 
     public void setAnswers(Set<Answer> answers) {
         this.answers = answers;
+    }
+
+    static class AnswerComparator implements Comparator<Answer> {
+
+        @Override
+        public int compare(Answer o1, Answer o2) {
+            if (o1.getSolution() && !o2.getSolution()) {
+                return -1;
+            }
+
+            if (o1.getSolution() && o2.getSolution()) {
+                return o2.getLiked().size() - o1.getLiked().size();
+            }
+
+            if (o1.getCreateDate().isBefore(o2.getCreateDate())) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+    }
+
+    static class TagComparator implements Comparator<Tag> {
+
+        @Override
+        public int compare(Tag o1, Tag o2) {
+            return (int)(o2.getId() - o1.getId());
+        }
     }
 }

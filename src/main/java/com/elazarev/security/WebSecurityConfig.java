@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
+        //todo: разобраться с настройкой роутов, потому что работает криво
         http
                 .authorizeRequests()
                 .antMatchers(

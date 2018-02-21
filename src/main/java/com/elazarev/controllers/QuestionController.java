@@ -3,7 +3,7 @@ package com.elazarev.controllers;
 import com.elazarev.domain.Answer;
 import com.elazarev.domain.Question;
 import com.elazarev.domain.User;
-import com.elazarev.repository.AnswerRepository;
+import com.elazarev.service.AnswerService;
 import com.elazarev.service.QuestionService;
 import com.elazarev.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.util.*;
 
 /**
@@ -32,7 +33,7 @@ public class QuestionController {
     private UserService userService;
 
     @Autowired
-    private AnswerRepository anserverRepo;
+    private AnswerService answerService;
 
     @GetMapping(path = {"/page/{page}", ""})
     public String allQuestions(@PathVariable Optional<Integer> page, Model model) {
@@ -106,8 +107,49 @@ public class QuestionController {
         a.setSolution(false);
         a.setText(text);
 
-        anserverRepo.save(a);
+        answerService.save(a);
         return "redirect:/questions/show/" + id;
     }
 
+    @PostMapping("/subscribe")
+    public String subscribe(@RequestParam("question_id") Long id, Principal principal) {
+        User user = userService.findUserByLogin(principal.getName());
+        boolean found = false;
+        for (Question q : user.getSubscriptions()) {
+            if (q.getId().equals(id)) {
+                found = true;
+            }
+        }
+
+        if (!found) {
+            questionService.subscribe(user, id);
+        }
+        return "redirect:/questions/show/" + id;
+    }
+
+    @PostMapping("/answer/like")
+    public String like(@RequestParam("answer_id") Long id, @RequestParam("question_id") Long question_id, Principal principal, HttpServletResponse resp) {
+        User user = userService.findUserByLogin(principal.getName());
+        Optional<Answer> optionalAnswer = answerService.findById(id);
+        if (!optionalAnswer.isPresent()) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return "redirect:/error";
+        }
+
+        Answer answer =  optionalAnswer.get();
+        boolean found = false;
+        for (User u : answer.getLiked()) {
+            if (u.getId().equals(user.getId())) {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            answer.getLiked().add(user);
+            answerService.save(answer);
+        }
+
+        return "redirect:/questions/show/" + question_id;
+    }
 }

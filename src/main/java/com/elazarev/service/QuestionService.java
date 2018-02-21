@@ -46,4 +46,15 @@ public class QuestionService {
         return questionRepository.save(q).getId();
     }
 
+    public boolean subscribe(User u, Long questionId) {
+        Optional<Question> question = questionRepository.findById(questionId);
+        if (question.isPresent()) {
+            Question q = question.get();
+            q.getSubscribers().add(u);
+            questionRepository.save(q);
+            return true;
+        }
+        return false;
+    }
+
 }

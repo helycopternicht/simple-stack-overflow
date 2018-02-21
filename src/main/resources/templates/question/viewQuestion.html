@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/2005/Atom">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="${question.title}"></title>
     <meta charset="utf-8">
@@ -25,9 +25,13 @@
             </h5>
 
             <p th:text="${question.description}"></p>
-            <button type="button" class="btn btn-default btn-lg" th:text="'Subscribe | ' + ${question.subscribers.size()}">
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Subscribe | 10
-            </button>
+            <form method="post" th:action="@{/questions/subscribe}">
+                <input type="hidden" id="question_id" th:name="question_id" th:value="${question.id}">
+                <button type="submit" id="subscribe" th:value="${question.id}" class="btn btn-default btn-lg" th:text="'Subscribe | ' + ${question.subscribers.size()}">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true" id="subscribeText"></span>
+                </button>
+            </form>
+
         </div>
 
         <br/>
@@ -47,8 +51,11 @@
                         <small th:text="${#dates.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></small>
                     </h4>
                     <p th:text="${answer.text}"></p>
-
-                    <button class="btn btn-success" th:text="'Like | ' + ${answer.liked.size()}"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                    <form th:action="@{/questions/answer/like}" method="post">
+                        <input type="hidden" th:value="${answer.id}" name="answer_id">
+                        <input type="hidden" th:value="${question.id}" name="question_id">
+                        <button class="btn btn-success" th:text="'Like | ' + ${answer.liked.size()}"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                    </form>
                     <br>
                 </div>
             </div>
@@ -71,5 +78,6 @@
     </div>
 
     <footer  th:replace="~{/layout :: footer}"></footer>
+
 </body>
 </html>

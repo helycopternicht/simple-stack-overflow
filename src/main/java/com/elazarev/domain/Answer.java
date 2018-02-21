@@ -2,8 +2,10 @@ package com.elazarev.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
@@ -34,7 +36,7 @@ public class Answer {
     private Boolean solution;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "answers_rating", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "answer_id"))
+    @JoinTable(name = "answers_rating", joinColumns = @JoinColumn(name = "answer_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> liked = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "answer", fetch = FetchType.EAGER)
