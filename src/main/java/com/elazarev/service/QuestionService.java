@@ -36,6 +36,10 @@ public class QuestionService {
         return questionRepository.findById(id);
     }
 
+    public Page<Question> getMyFeedPaged(int page, User user) {
+        return questionRepository.findByTagsIn(user.getTags(), PageRequest.of(page - 1, MAX_QUESTIONS_PER_PAGE, Sort.Direction.DESC, "createDate"));
+    }
+
     public Page<Question> getQuestionPaged(int page) {
         return questionRepository.findAll(PageRequest.of(page - 1, MAX_QUESTIONS_PER_PAGE, Sort.Direction.DESC, "createDate"));
     }
