@@ -3,6 +3,7 @@ package com.elazarev.controllers;
 import com.elazarev.domain.Answer;
 import com.elazarev.domain.Question;
 import com.elazarev.domain.User;
+import com.elazarev.exceptions.ResourceNotFoundException;
 import com.elazarev.service.AnswerService;
 import com.elazarev.service.QuestionService;
 import com.elazarev.service.UserService;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.*;
 
 /**
@@ -40,18 +40,18 @@ public class QuestionController {
     @GetMapping(path = {"/page/{page}", ""})
     public String allQuestions(@PathVariable Optional<Integer> page, Model model) {
 
-        Page<Question> data;
-        if (page.isPresent()) {
-            data = questionService.getQuestionPaged(page.get());
-        } else {
-            data = questionService.getQuestionPaged(1);
-        }
+        Page<Question> data = questionService.getQuestionPaged(page.orElse(1));
 
         if (page.isPresent() && page.get() > data.getTotalPages()) {
             return "forward:/error";
         }
 
+        Map<String, String> pager = new HashMap<>();
+        pager.put("prevUrl", "/questions/page/" + (page.orElse(1) - 1));
+        pager.put("nextUrl", "/questions/page/" + (page.orElse(1) + 1));
+
         model.addAttribute("paginator", data);
+        model.addAttribute("pager", pager);
 
         return "/question/questions";
     }
@@ -188,6 +188,25 @@ public class QuestionController {
         answer.get().setSolution(true);
         answerService.save(answer.get());
         return "redirect:/questions/show/" + question.getId();
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam String searchText,
+                         @RequestParam Optional<Integer> page,
+                         Model model) throws ResourceNotFoundException {
+
+        Page<Question> questions = questionService.search(searchText, page.orElse(1));
+        if (questions.getSize() == 0) {
+            throw new ResourceNotFoundException(); //todo: make with errorHandler
+        }
+
+        Map<String, String> pager = new HashMap<>();
+        pager.put("prevUrl", "/questions/search?searchText=" + searchText + "&page=" +(page.orElse(1) - 1));
+        pager.put("nextUrl", "/questions/search?searchText=" + searchText + "&page=" +(page.orElse(1) + 1));
+
+        model.addAttribute("paginator", questions);
+        model.addAttribute("pager", pager);
+        return "/question/questions";
     }
 
 }

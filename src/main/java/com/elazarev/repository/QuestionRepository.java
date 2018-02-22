@@ -17,4 +17,7 @@ import java.util.Collection;
 @Repository
 public interface QuestionRepository extends PagingAndSortingRepository<Question, Long> {
     Page<Question> findByTagsIn(Collection<Tag> tags, Pageable pageable);
+
+    Page<Question> findByTitleStartsWith(String s, Pageable pageable);
+
 }

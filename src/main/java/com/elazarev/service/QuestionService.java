@@ -7,6 +7,7 @@ import com.elazarev.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -60,4 +61,8 @@ public class QuestionService {
         return false;
     }
 
+    public Page<Question> search(String condition, int page) {
+        Pageable p = PageRequest.of(page - 1, MAX_QUESTIONS_PER_PAGE, Sort.Direction.DESC, "createDate");
+        return questionRepository.findByTitleStartsWith(condition, p);
+    }
 }

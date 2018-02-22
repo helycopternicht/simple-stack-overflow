@@ -41,9 +41,9 @@
         <hr/>
 
         <ul class="pagination">
-            <li th:if="${paginator.hasPrevious()}"><a th:href="@{/questions/page/{num}(num=${paginator.getNumber()})}">Prev</a></li>
+            <li th:if="${paginator.hasPrevious()}"><a th:href="${pager.get('prevUrl')}">Prev</a></li>
             <li><a th:text="${paginator.getNumber() + 1}"></a></li>
-            <li th:if="${paginator.hasNext()}"><a th:href="@{/questions/page/{num}(num=${paginator.getNumber() + 2})}">Next</a></li>
+            <li th:if="${paginator.hasNext()}"><a th:href="${pager.get('nextUrl')}">Next</a></li>
         </ul>
 
     </div>
