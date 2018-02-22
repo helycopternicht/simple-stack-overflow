@@ -28,4 +28,10 @@ public class Application {
         engine.setTemplateResolver(templateResolver);
         return engine;
     }
+
+//    @Bean
+//    public SimpleMappingExceptionResolver exceptionResolver() {
+//        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
+//        resolver.;
+//    }
 }

@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
  */
 public class RegisterUserForm {
     @NotNull
-    @Size(min = 2, max = 30, message = "Login should be longer than 2 charachter")
+    @Size(min = 2, max = 30, message = "Login should be longer than 2 charachters")
     private String login;
 
     @NotNull
@@ -26,6 +26,8 @@ public class RegisterUserForm {
     private String lastName;
 
     private String about;
+
+    private String photoUrl;
 
     public String getLogin() {
         return login;
@@ -73,5 +75,13 @@ public class RegisterUserForm {
 
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

@@ -14,4 +14,9 @@ public class WelcomeController {
     public String welcome() {
         return "forward:/questions";
     }
+
+    @RequestMapping("/about")
+    public String about() {
+        return null; // todo: implement about page
+    }
 }

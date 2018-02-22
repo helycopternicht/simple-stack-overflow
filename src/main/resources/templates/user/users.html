@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav th:replace="~{/layout :: header}"></nav>
+
+    <div class="container bordered-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>Username</td>
+                    <td>About</td>
+                    <td>Questions</td>
+                    <td>Answers</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user : ${page}">
+                    <td><img th:src="${user.photoUrl}" alt="Photo" class="img-circle" width="30" height="30"></td>
+                    <td><a th:href="@{/users/{name}(name=${user.login})}" th:text="'@' + ${user.login}"></a></td>
+                    <td th:text="${user.about}"></td>
+                    <td th:text="${user.questions.size()}"></td>
+                    <td th:text="${user.answers.size()}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul class="pagination">
+            <li th:if="${page.hasPrevious()}"><a th:href="${urls.get('prevUrl')}">Prev</a></li>
+            <li><a th:text="${page.getNumber() + 1}"></a></li>
+            <li th:if="${page.hasNext()}"><a th:href="${urls.get('nextUrl')}">Next</a></li>
+        </ul>
+
+    </div>
+    <footer  th:replace="~{/layout :: footer}"></footer>
+</body>
+</html>

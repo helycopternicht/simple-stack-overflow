@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -64,5 +65,9 @@ public class QuestionService {
     public Page<Question> search(String condition, int page) {
         Pageable p = PageRequest.of(page - 1, MAX_QUESTIONS_PER_PAGE, Sort.Direction.DESC, "createDate");
         return questionRepository.findByTitleStartsWith(condition, p);
+    }
+
+    public Collection<Question> findAllWhereAuthorIs(User u) {
+        return questionRepository.findAllByAuthorEquals(u);
     }
 }

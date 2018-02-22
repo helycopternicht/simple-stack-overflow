@@ -2,6 +2,7 @@ package com.elazarev.repository;
 
 import com.elazarev.domain.Question;
 import com.elazarev.domain.Tag;
+import com.elazarev.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -20,4 +21,5 @@ public interface QuestionRepository extends PagingAndSortingRepository<Question,
 
     Page<Question> findByTitleStartsWith(String s, Pageable pageable);
 
+    Collection<Question> findAllByAuthorEquals(User u);
 }

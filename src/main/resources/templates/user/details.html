@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title th:text="${user.login}"></title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<script type="text/javascript">
+    $( function() {
+        $( "#tabs" ).tabs();
+    });
+</script>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+        <img th:src="${user.photoUrl}" alt="Avatar" class="img-circle" width="70" height="70">
+        <h1 th:text="${user.firstName} + ' ' + ${user.LastName}"></h1>
+        <p th:text="${user.about}"></p>
+    </div>
+
+    <div id="tabs">
+        <ul class="nav nav-pills">
+            <li role="presentation" class="active"><a href="#questions">Questions</a></li>
+            <li role="presentation"><a href="#answers">Answers</a></li>
+            <li role="presentation"><a href="#tags">Tags</a></li>
+        </ul>
+        <div id="questions">
+
+            <div class="row" th:each="question: ${user.questions}">
+                <div class="col-span-5">
+                    <h2>
+                        <a th:href="@{/questions/show/{id}(id=${question.id})}" th:text="${question.title}"></a>
+                        <span class="glyphicon glyphicon-ok" th:if="${question.hasAnswer()}"></span>
+                    </h2>
+                    <h5>
+                        <a th:href="@{/users/{author}(author=${question.author.login})}" th:text="'@' + ${question.author.login}"></a>
+                        <span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
+                    </h5>
+                    <h5>
+                        <span class="label label-primary" th:each="tag: ${question.tags}" th:text="${tag.name}"></span>
+                    </h5>
+                </div>
+
+                <hr/>
+            </div>
+        </div>
+
+        <div id="answers">
+            <div class="row" th:each="question: ${questionsWithUserAnswer}">
+                <div class="col-span-5">
+                    <h2>
+                        <a th:href="@{/questions/show/{id}(id=${question.id})}" th:text="${question.title}"></a>
+                        <span class="glyphicon glyphicon-ok" th:if="${question.hasAnswer()}"></span>
+                    </h2>
+                    <h5>
+                        <a th:href="@{/users/{author}(author=${question.author.login})}" th:text="'@' + ${question.author.login}"></a>
+                        <span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
+                    </h5>
+                    <h5>
+                        <span class="label label-primary" th:each="tag: ${question.tags}" th:text="${tag.name}"></span>
+                    </h5>
+                </div>
+
+                <hr/>
+            </div>
+        </div>
+
+    </div>
+    <div id="tags">
+        <div class="row" th:each="tag: ${user.tags}">
+            <!--<div class="col-span-5">-->
+                <!--<h2>-->
+                    <!--<a th:href="@{/questions/show/{id}(id=${question.id})}" th:text="${question.title}"></a>-->
+                    <!--<span class="glyphicon glyphicon-ok" th:if="${question.hasAnswer()}"></span>-->
+                <!--</h2>-->
+                <!--<h5>-->
+                    <!--<a th:href="@{/users/{author}(author=${question.author.login})}" th:text="'@' + ${question.author.login}"></a>-->
+                    <!--<span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>-->
+                <!--</h5>-->
+                <!--<h5>-->
+                    <!--<span class="label label-primary" th:each="tag: ${question.tags}" th:text="${tag.name}"></span>-->
+                <!--</h5>-->
+            <!--</div>-->
+
+            <hr/>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.elazarev.repository;
 
 import com.elazarev.domain.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

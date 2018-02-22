@@ -56,7 +56,13 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_subscription", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "question_id"))
-    private List<Question> subscriptions = new ArrayList<>();
+    private Set<Question> subscriptions = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "author", fetch = FetchType.EAGER)
+    private Set<Answer> answers = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "author", fetch = FetchType.EAGER)
+    private Set<Question> questions = new HashSet<>();
 
     public User() {
     }
@@ -70,6 +76,7 @@ public class User implements UserDetails {
         user.setLastName(userForm.getLastName());
         user.setAbout(userForm.getAbout());
         user.setBaned(false);
+        user.setPhotoUrl(userForm.getPhotoUrl());
         return user;
     }
 
@@ -191,11 +198,28 @@ public class User implements UserDetails {
         this.tags = tags;
     }
 
-    public List<Question> getSubscriptions() {
+
+    public Set<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(Set<Answer> answers) {
+        this.answers = answers;
+    }
+
+    public Set<Question> getSubscriptions() {
         return subscriptions;
     }
 
-    public void setSubscriptions(List<Question> subscriptions) {
+    public void setSubscriptions(Set<Question> subscriptions) {
         this.subscriptions = subscriptions;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
     }
 }
