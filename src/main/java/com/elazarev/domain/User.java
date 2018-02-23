@@ -67,19 +67,6 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public static User constructUser(RegisterUserForm userForm, PasswordEncoder encoder) {
-        User user = new User();
-        user.setLogin(userForm.getLogin());
-        user.setPassword(encoder.encode(userForm.getPassword()));
-        user.setEmail(userForm.getEmail());
-        user.setFirstName(userForm.getFirstName());
-        user.setLastName(userForm.getLastName());
-        user.setAbout(userForm.getAbout());
-        user.setBaned(false);
-        user.setPhotoUrl(userForm.getPhotoUrl());
-        return user;
-    }
-
     public Long getId() {
         return id;
     }

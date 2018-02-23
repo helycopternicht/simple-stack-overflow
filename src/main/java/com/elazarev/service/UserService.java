@@ -51,4 +51,8 @@ public class UserService {
         u.getRoles().add(roleRepo.findByName("role_user"));
         return repo.save(u);
     }
+
+    public void save(User u) {
+        repo.save(u);
+    }
 }

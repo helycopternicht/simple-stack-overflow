@@ -24,6 +24,11 @@ public class Tag {
     @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
     private Set<Question> questions;
 
+    @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
+    private Set<User> users;
+
+    private String about;
+
     public Tag() {
     }
 
@@ -61,5 +66,21 @@ public class Tag {
 
     public void setQuestions(Set<Question> questions) {
         this.questions = questions;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }
