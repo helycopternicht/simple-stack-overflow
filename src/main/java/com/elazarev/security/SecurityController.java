@@ -51,9 +51,9 @@ public class SecurityController {
             return "/auth/registration";
         }
 
-        User newUser = User.constructUser(registerUserForm, encoder);
+        User newUser = registerUserForm.constructUser(encoder);
         try {
-            newUser = userService.createUser(newUser);
+            userService.createUser(newUser);
         } catch (UserAlreadyExistsException e) {
             model.addAttribute("registerUserForm", registerUserForm);
             model.addAttribute("incorrectLogin", true);

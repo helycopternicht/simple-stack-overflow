@@ -1,5 +1,8 @@
 package com.elazarev.security;
 
+import com.elazarev.domain.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -83,5 +86,18 @@ public class RegisterUserForm {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public User constructUser(PasswordEncoder encoder) {
+        User user = new User();
+        user.setLogin(this.getLogin());
+        user.setPassword(encoder.encode(this.getPassword()));
+        user.setEmail(this.getEmail());
+        user.setFirstName(this.getFirstName());
+        user.setLastName(this.getLastName());
+        user.setAbout(this.getAbout());
+        user.setBaned(false);
+        user.setPhotoUrl(this.getPhotoUrl());
+        return user;
     }
 }
