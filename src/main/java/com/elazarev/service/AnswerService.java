@@ -14,8 +14,12 @@ import java.util.Optional;
 @Service
 public class AnswerService {
 
-    @Autowired
     private AnswerRepository answerRepo;
+
+    @Autowired
+    public AnswerService(AnswerRepository answerRepo) {
+        this.answerRepo = answerRepo;
+    }
 
     public Optional<Answer> findById(Long id) {
         return answerRepo.findById(id);

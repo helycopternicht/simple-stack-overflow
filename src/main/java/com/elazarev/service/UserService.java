@@ -25,11 +25,15 @@ public class UserService {
 
     public static final int MAX_USERS_PER_PAGE = 10;
 
-    @Autowired
     private UserRepository repo;
 
-    @Autowired
     private RoleRepository roleRepo;
+
+    @Autowired
+    public UserService(UserRepository repo, RoleRepository roleRepo) {
+        this.repo = repo;
+        this.roleRepo = roleRepo;
+    }
 
     public Optional<User> findById(Long id) {
         return repo.findById(id);
@@ -48,7 +52,7 @@ public class UserService {
         if (repo.findUserByLogin(u.getLogin()) != null) {
             throw new UserAlreadyExistsException("User already exists - login: " + u.getLogin());
         }
-        u.getRoles().add(roleRepo.findByName("role_user"));
+        u.getRoles().add(roleRepo.findByName(RoleRepository.ROLE_NAME_USER));
         return repo.save(u);
     }
 

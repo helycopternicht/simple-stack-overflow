@@ -29,10 +29,6 @@ public class QuestionService {
 
     public static final int MAX_QUESTIONS_PER_PAGE = 10;
 
-    public Iterable<Question> getAll() {
-        return questionRepository.findAll();
-    }
-
     public Optional<Question> getById(Long id) {
         return questionRepository.findById(id);
     }
