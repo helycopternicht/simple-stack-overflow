@@ -108,4 +108,19 @@ public class Answer {
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Answer answer = (Answer) o;
+
+        return getId().equals(answer.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

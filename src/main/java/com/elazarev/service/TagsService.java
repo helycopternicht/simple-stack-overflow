@@ -8,10 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
@@ -30,17 +28,22 @@ public class TagsService {
     }
 
     public Iterable<Tag> saveTags(String[] tags) {
-        List<Tag> result = new ArrayList<>();
-        Tag oldTag = null;
-        for (String tagName : tags) {
-            oldTag = repo.findByName(tagName);
-            if (oldTag != null) {
-                result.add(oldTag);
-            } else {
-                result.add(new Tag(tagName));
-            }
+
+        List<Tag> existTags = repo.findAllByNameIn(Arrays.asList(tags));
+        List<String> existingNames = existTags.stream()
+                .map(e -> e.getName())
+                .collect(Collectors.toList());
+
+        List<Tag> nonExistent = Arrays.stream(tags)
+                .filter(e -> !existingNames.contains(e))
+                .map(e -> new Tag(e))
+                .collect(Collectors.toList());
+
+        if (nonExistent.size() > 0 ) {
+            Iterable<Tag> saved = repo.saveAll(nonExistent);
+            saved.forEach(e -> existTags.add(e));
         }
-        return repo.saveAll(result);
+        return existTags;
     }
 
     public Page<Tag> findAll(int page) {

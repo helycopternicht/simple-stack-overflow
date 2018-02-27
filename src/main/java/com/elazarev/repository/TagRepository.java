@@ -4,6 +4,7 @@ import com.elazarev.domain.Tag;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -15,4 +16,6 @@ import java.util.Set;
 public interface TagRepository extends PagingAndSortingRepository<Tag, Long> {
 
     Tag findByName(String name);
+
+    List<Tag> findAllByNameIn(Collection<String> names);
 }

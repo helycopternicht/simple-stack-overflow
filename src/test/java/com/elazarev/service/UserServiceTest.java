@@ -121,6 +121,8 @@ public class UserServiceTest {
 
     @Test
     public void save() throws Exception {
-
+        User user = new User();
+        userService.save(user);
+        verify(userRepository).save(user);
     }
 }

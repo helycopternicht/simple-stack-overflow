@@ -40,11 +40,11 @@ public class Question {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_subscription", joinColumns = @JoinColumn(name = "question_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> subscribers = new ArrayList<>();
+    private Set<User> subscribers = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question", fetch = FetchType.EAGER)
     @OrderBy("createDate asc")
-    private Set<Answer> answers = new TreeSet<>();
+    private Set<Answer> answers = new HashSet<>();
 
     public Question() {
     }
@@ -106,14 +106,6 @@ public class Question {
         this.tags = tags;
     }
 
-    public List<User> getSubscribers() {
-        return subscribers;
-    }
-
-    public void setSubscribers(List<User> subscribers) {
-        this.subscribers = subscribers;
-    }
-
     public Set<Answer> getAnswers() {
         return answers;
     }
@@ -130,4 +122,26 @@ public class Question {
         this.createDate = createDate;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Question question = (Question) o;
+
+        return getId() != null ? getId().equals(question.getId()) : question.getId() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
+    }
+
+    public Set<User> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(Set<User> subscribers) {
+        this.subscribers = subscribers;
+    }
 }
