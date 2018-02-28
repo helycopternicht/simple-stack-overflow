@@ -1,5 +1,6 @@
 package com.elazarev.controllers;
 
+import com.elazarev.Paths;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,7 +13,7 @@ public class WelcomeController {
 
     @RequestMapping(path = "/")
     public String welcome() {
-        return "redirect:/questions";
+        return "redirect:" + Paths.PATH_QUESTIONS_ALL;
     }
 
 }

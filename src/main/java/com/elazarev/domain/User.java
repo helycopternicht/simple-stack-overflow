@@ -233,4 +233,9 @@ public class User implements UserDetails {
     public int hashCode() {
         return getId() != null ? getId().hashCode() : 0;
     }
+
+    @Override
+    public String toString() {
+        return "@" + this.login;
+    }
 }

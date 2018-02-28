@@ -26,7 +26,7 @@
         <tbody>
         <tr th:each="tag : ${page}">
             <td><img th:src="${tag.imageUrl}" alt="Photo" class="img-circle" width="30" height="30"></td>
-            <td><ins><a th:href="@{/tags/{name}(name=${tag.name})}" th:text="${tag.name}"></a></ins></td>
+            <td><ins><a th:href="@{${T(com.elazarev.Paths).PATH_TAGS_SHOW}(name=${tag.name})}" th:text="${tag.name}"></a></ins></td>
             <td th:text="${tag.about}"></td>
             <td th:text="${tag.users.size()}"></td>
             <td th:text="${tag.questions.size()}"></td>

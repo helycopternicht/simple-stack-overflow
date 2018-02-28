@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
@@ -23,7 +23,7 @@
 
             <h1 class="text-center login-title">Sign in to continue to Simpla stack oveflow</h1>
             <div class="account-wall">
-                <form class="form-signin" th:action="@{/login}" method="post">
+                <form class="form-signin" th:action="@{${T(com.elazarev.Paths).PATH_LOGIN}}" method="post">
                     <input type="text" class="form-control" placeholder="Login" name="username" required autofocus>
                     <input type="password" class="form-control" placeholder="Password" name="password" required>
                     <button class="btn btn-lg btn-primary btn-block" type="submit">

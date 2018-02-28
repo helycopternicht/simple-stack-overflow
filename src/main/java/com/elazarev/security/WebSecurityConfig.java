@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
 //                .formLogin().loginPage("/login").defaultSuccessUrl("/questions/").permitAll();
 
-        .authorizeRequests().anyRequest().permitAll().and().formLogin().loginPage("/login").permitAll();
+        .authorizeRequests().anyRequest().permitAll().and().formLogin().loginPage("/login").permitAll().and().logout().permitAll();
     }
 
     @Bean

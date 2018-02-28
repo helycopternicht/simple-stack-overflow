@@ -1,5 +1,6 @@
 package com.elazarev.controllers;
 
+import com.elazarev.Paths;
 import com.elazarev.domain.Question;
 import com.elazarev.domain.User;
 import com.elazarev.exceptions.ResourceNotFoundException;
@@ -23,7 +24,6 @@ import java.util.Optional;
  * @since 20.02.18
  */
 @Controller
-@RequestMapping(path = "/my")
 public class PersonalController {
 
     private QuestionService questionService;
@@ -33,13 +33,13 @@ public class PersonalController {
         this.questionService = questionService;
     }
 
-    @GetMapping("/feed")
+    @GetMapping(Paths.PATH_MY_FEED)
     public String myFeedPaged(@RequestParam Optional<Integer> page, Model model, Principal principal) {
         model.addAttribute("paginator", questionService.getMyFeedPage(page, principal));
         return "/question/questions";
     }
 
-    @GetMapping("/profile")
+    @GetMapping(Paths.PATH_MY_PROFILE)
     public String profile(Principal p) {
         // todo: implement profile
         return null;

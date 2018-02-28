@@ -1,5 +1,6 @@
 package com.elazarev.controllers;
 
+import com.elazarev.Paths;
 import com.elazarev.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +18,6 @@ import java.util.Optional;
  * @since 21.02.18
  */
 @Controller
-@RequestMapping("/users")
 public class UserController {
 
     private UserService userService;
@@ -26,7 +26,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("")
+    @GetMapping(Paths.PATH_USERS_ALL)
     public String index(Model model, @RequestParam Optional<Integer> page) {
 
         Map<String, String> urls = new HashMap<>();
@@ -39,10 +39,9 @@ public class UserController {
         return "user/users";
     }
 
-    @GetMapping("/{name}")
+    @GetMapping(Paths.PATH_USERS_SHOW)
     public String details(Model model, @PathVariable String name) {
         model.addAttribute("user", userService.findByLogin(name));
         return "user/details";
     }
-
 }

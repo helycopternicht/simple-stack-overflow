@@ -26,7 +26,7 @@
             <tbody>
                 <tr th:each="user : ${page}">
                     <td><img th:src="${user.photoUrl}" alt="Photo" class="img-circle" width="30" height="30"></td>
-                    <td><a th:href="@{/users/{name}(name=${user.login})}" th:text="'@' + ${user.login}"></a></td>
+                    <td><a th:href="@{${T(com.elazarev.Paths).PATH_USERS_SHOW}(name=${user.login})}" th:text="${user}"></a></td>
                     <td th:text="${user.about}"></td>
                     <td th:text="${user.questions.size()}"></td>
                     <td th:text="${user.answers.size()}"></td>

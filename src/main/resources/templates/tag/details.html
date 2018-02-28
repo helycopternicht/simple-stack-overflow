@@ -10,19 +10,22 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <script type="text/javascript">
-    $( function() {
-        $( "#tabs" ).tabs();
+    $(function () {
+        $("#tabs").tabs();
     });
 </script>
 
 <body>
+
+<nav th:replace="~{/layout :: header}"></nav>
 
 <div class="container">
 
     <div class="page-header">
         <img th:src="${tag.imageUrl}" alt="Avatar" class="img-circle" width="70" height="70">
         <h1 th:text="${tag.name}"></h1>
-        <a class="btn btn-default" th:href="@{/tags/subscribe/{name}(name=${tag.name})}" th:text="'Subscribe | ' + ${tag.users.size()}"></a>
+        <a class="btn btn-default" th:href="@{${T(com.elazarev.Paths).PATH_TAGS_SUBSCRIBE}(name=${tag.name})}"
+           th:text="'Subscribe | ' + ${tag.users.size()}"></a>
         <p th:text="${tag.about}"></p>
     </div>
 
@@ -45,7 +48,8 @@
                 <tbody>
                 <tr th:each="user : ${tag.users}">
                     <td><img th:src="${user.photoUrl}" alt="Photo" class="img-circle" width="30" height="30"></td>
-                    <td><a th:href="@{/users/{name}(name=${user.login})}" th:text="'@' + ${user.login}"></a></td>
+                    <td><a th:href="@{${T(com.elazarev.Paths).PATH_USERS_SHOW}(name=${user.login})}"
+                           th:text="'@' + ${user.login}"></a></td>
                     <td th:text="${user.about}"></td>
                 </tr>
                 </tbody>
@@ -56,12 +60,15 @@
             <div class="row" th:each="question: ${tag.questions}">
                 <div class="col-span-5">
                     <h2>
-                        <a th:href="@{/questions/show/{id}(id=${question.id})}" th:text="${question.title}"></a>
+                        <a th:href="@{${T(com.elazarev.Paths).PATH_QUESTIONS_SHOW}(id=${question.id})}"
+                           th:text="${question.title}"></a>
                         <span class="glyphicon glyphicon-ok" th:if="${question.hasAnswer()}"></span>
                     </h2>
                     <h5>
-                        <a th:href="@{/users/{author}(author=${question.author.login})}" th:text="'@' + ${question.author.login}"></a>
-                        <span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
+                        <a th:href="@{${T(com.elazarev.Paths).PATH_USERS_SHOW}(name=${question.author.login})}"
+                           th:text="'@' + ${question.author.login}"></a>
+                        <span class="gelycon gelycon-time"
+                              th:text="${#temporals.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
                     </h5>
                     <h5>
                         <span class="label label-primary" th:each="tag: ${question.tags}" th:text="${tag.name}"></span>
@@ -77,5 +84,8 @@
 </div>
 
 </div>
+
+<footer th:replace="~{/layout :: footer}"></footer>
+
 </body>
 </html>

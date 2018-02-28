@@ -16,7 +16,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" th:href="@{/}">Stackoverflow (Simple)</a>
+                <a class="navbar-brand" th:href="@{${T(com.elazarev.Paths).PATH_QUESTIONS_ALL}}">Stackoverflow (Simple)</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -25,16 +25,16 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Questions <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a th:href="@{/questions}">All questions</a></li>
-                            <li><a th:href="@{/my/feed}">My feed</a></li>
+                            <li><a th:href="@{${T(com.elazarev.Paths).PATH_QUESTIONS_ALL}}">All questions</a></li>
+                            <li><a th:href="@{${T(com.elazarev.Paths).PATH_MY_FEED}}">My feed</a></li>
                         </ul>
                     </li>
 
-                    <li><a th:href="@{/tags/}">Tags</a></li>
-                    <li><a th:href="@{/users}">Users</a></li>
+                    <li><a th:href="@{${T(com.elazarev.Paths).PATH_TAGS_ALL}}">Tags</a></li>
+                    <li><a th:href="@{${T(com.elazarev.Paths).PATH_USERS_ALL}}">Users</a></li>
                 </ul>
 
-                <form class="navbar-form navbar-left" th:action="@{/questions/search}" method="get">
+                <form class="navbar-form navbar-left" th:action="@{${T(com.elazarev.Paths).PATH_QUESTIONS_SEARCH}}" method="get">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Search" name="searchText">
                     </div>
@@ -42,14 +42,14 @@
                 </form>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a class="btn btn-default" th:href="@{/questions/add}" role="button">New question</a></li>
-                    <li><a th:href="@{/login}">Sign in</a></li>
-                    <li><a th:href="@{/registration}">Register</a></li>
+                    <li><a class="btn btn-default" th:href="@{${T(com.elazarev.Paths).PATH_QUESTIONS_ADD}}" role="button">New question</a></li>
+                    <li><a th:href="@{${T(com.elazarev.Paths).PATH_LOGIN}}">Sign in</a></li>
+                    <li><a th:href="@{${T(com.elazarev.Paths).PATH_REGISTER}}">Register</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a th:href="@{/my/profile}">My profile</a></li>
-                            <li><a th:href="@{/logout}">Logout</a></li>
+                            <li><a th:href="@{${T(com.elazarev.Paths).PATH_MY_PROFILE}}">My profile</a></li>
+                            <li><a th:href="@{${T(com.elazarev.Paths).PATH_LOGOUT}}">Logout</a></li>
                         </ul>
                     </li>
                 </ul>

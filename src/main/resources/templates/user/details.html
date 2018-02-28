@@ -15,8 +15,9 @@
         $( "#tabs" ).tabs();
     });
 </script>
-
 <body>
+
+<nav th:replace="~{/layout :: header}"></nav>
 
 <div class="container">
 
@@ -37,12 +38,12 @@
             <div class="row" th:each="question: ${user.questions}">
                 <div class="col-span-5">
                     <h2>
-                        <a th:href="@{/questions/show/{id}(id=${question.id})}" th:text="${question.title}"></a>
+                        <a th:href="@{${T(com.elazarev.Paths).PATH_QUESTIONS_SHOW}(id=${question.id})}" th:text="${question.title}"></a>
                         <span class="glyphicon glyphicon-ok" th:if="${question.hasAnswer()}"></span>
                     </h2>
                     <h5>
-                        <a th:href="@{/users/{author}(author=${question.author.login})}" th:text="'@' + ${question.author.login}"></a>
-                        <span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
+                        <a th:href="@{${T(com.elazarev.Paths).PATH_USERS_SHOW}(name=${question.author.login})}" th:text="${question.author}"></a>
+                        <span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd MMM yyyy HH:mm')}"></span>
                     </h5>
                     <h5>
                         <span class="label label-primary" th:each="tag: ${question.tags}" th:text="${tag.name}"></span>
@@ -57,12 +58,12 @@
             <div class="row" th:each="question: ${user.questions}">
                 <div class="col-span-5">
                     <h2>
-                        <a th:href="@{/questions/show/{id}(id=${question.id})}" th:text="${question.title}"></a>
+                        <a th:href="@{${T(com.elazarev.Paths).PATH_QUESTIONS_SHOW}(id=${question.id})}" th:text="${question.title}"></a>
                         <span class="glyphicon glyphicon-ok" th:if="${question.hasAnswer()}"></span>
                     </h2>
                     <h5>
-                        <a th:href="@{/users/{author}(author=${question.author.login})}" th:text="'@' + ${question.author.login}"></a>
-                        <span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
+                        <a th:href="@{${T(com.elazarev.Paths).PATH_USERS_SHOW}(name=${question.author.login})}" th:text="'@' + ${question.author.login}"></a>
+                        <span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd MMM yyyy HH:mm')}"></span>
                     </h5>
                     <h5>
                         <span class="label label-primary" th:each="tag: ${question.tags}" th:text="${tag.name}"></span>
@@ -73,29 +74,37 @@
             </div>
         </div>
 
-    </div>
-    <div id="tags">
-        <div class="row" th:each="tag: ${user.tags}">
-            <!--<div class="col-span-5">-->
-                <!--<h2>-->
-                    <!--<a th:href="@{/questions/show/{id}(id=${question.id})}" th:text="${question.title}"></a>-->
-                    <!--<span class="glyphicon glyphicon-ok" th:if="${question.hasAnswer()}"></span>-->
-                <!--</h2>-->
-                <!--<h5>-->
-                    <!--<a th:href="@{/users/{author}(author=${question.author.login})}" th:text="'@' + ${question.author.login}"></a>-->
-                    <!--<span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>-->
-                <!--</h5>-->
-                <!--<h5>-->
-                    <!--<span class="label label-primary" th:each="tag: ${question.tags}" th:text="${tag.name}"></span>-->
-                <!--</h5>-->
-            <!--</div>-->
+        <div id="tags">
+            <div class="row">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <td></td>
+                        <td>Name</td>
+                        <td>About</td>
+                        <td>Users</td>
+                        <td>Questions</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="tag: ${user.tags}">
+                        <td><img th:src="${tag.imageUrl}" alt="Photo" class="img-circle" width="30" height="30"></td>
+                        <td><ins><a th:href="@{${T(com.elazarev.Paths).PATH_TAGS_SHOW}(name=${tag.name})}" th:text="${tag.name}"></a></ins></td>
+                        <td th:text="${tag.about}"></td>
+                        <td th:text="${tag.users.size()}"></td>
+                        <td th:text="${tag.questions.size()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
 
-            <hr/>
+                <hr/>
+            </div>
         </div>
     </div>
-</div>
-</div>
 
 </div>
+
+<footer  th:replace="~{/layout :: footer}"></footer>
+
 </body>
 </html>

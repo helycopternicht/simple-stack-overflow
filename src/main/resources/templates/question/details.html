@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="${question.title}"></title>
     <meta charset="utf-8">
@@ -19,15 +17,15 @@
         <div id="question">
             <h1 th:text="${question.title}"></h1>
             <h4>
-                <a th:href="@{/users/{author}(author=${question.author.login})}" th:text="'@' + ${question.author.login}"></a>
-                <span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
+                <a th:href="@{${T(com.elazarev.Paths).PATH_USERS_SHOW}(name=${question.author.login})}" th:text="${question.author}"></a>
+                <span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd MMM yyyy HH:mm')}"></span>
             </h4>
             <h5>
                 <span class="label label-primary" th:each="tag : ${question.tags}" th:text="${tag.name}"></span>
             </h5>
 
             <p th:text="${question.description}"></p>
-            <form method="post" th:action="@{/questions/subscribe}">
+            <form method="post" th:action="@{${T(com.elazarev.Paths).PATH_QUESTIONS_SUBSCRIBE}}">
                 <input type="hidden" id="question_id" th:name="question_id" th:value="${question.id}">
                 <button type="submit" id="subscribe" th:value="${question.id}" class="btn btn-default btn-lg" th:text="'Subscribe | ' + ${question.subscribers.size()}">
                     <span class="glyphicon glyphicon-star" aria-hidden="true" id="subscribeText"></span>
@@ -49,17 +47,17 @@
 
                 <div class="col-sm-10">
                     <h4>
-                        <a th:href="@{/users/{author}(author=${answer.author.login})}" th:text="'@' + ${answer.author.login}"></a>
-                        <span th:text="${#temporals.format(answer.createDate, 'dd/MMM/yyyy HH:mm')}"></span>
+                        <a th:href="@{${T(com.elazarev.Paths).PATH_USERS_SHOW}(user=${answer.author.login})}" th:text="${answer.author}"></a>
+                        <span th:text="${#temporals.format(answer.createDate, 'dd MMM yyyy HH:mm')}"></span>
                         <span class="glyphicon glyphicon-ok" th:if="${answer.getSolution()}"></span>
                     </h4>
                     <p th:text="${answer.text}"></p>
-                    <form th:action="@{/questions/answer/like}" method="post" class="form-inline">
+                    <form th:action="@{${T(com.elazarev.Paths).PATH_QUESTIONS_ANSWER_LIKE}}" method="post" class="form-inline">
                         <input type="hidden" th:value="${answer.id}" name="answer_id">
                         <input type="hidden" th:value="${question.id}" name="question_id">
                         <button class="btn btn-info" th:text="'Like | ' + ${answer.liked.size()}"><span class="glyphicon glyphicon-thumbs-up"></span></button>
                     </form>
-                    <form th:action="@{/questions/answer/solution}" method="post" th:if="${addSolutionButton}" class="form-inline">
+                    <form th:action="@{${T(com.elazarev.Paths).PATH_QUESTIONS_ANSWER_SOLUTION}" method="post" th:if="${addSolutionButton}" class="form-inline">
                         <input type="hidden" name="answer_id" th:value="${answer.id}">
                         <input type="hidden" th:value="${question.id}" name="question_id">
                         <button type="submit" class="btn btn-success">Solution!</button>
@@ -73,7 +71,7 @@
             <div class="col-sm-2 text-center">
                 <img src="https://kwork.ru/pics/t3/85/109231-1.jpg" class="img-circle" height="65" width="65" alt="Avatar">
             </div>
-            <form role="form" class="col-sm-10" method="post" th:action="@{/questions/answer}">
+            <form role="form" class="col-sm-10" method="post" th:action="@{${T(com.elazarev.Paths).PATH_QUESTIONS_ANSWER_ADD}}">
                 <h4>Youre answer</h4>
                 <div class="form-group">
                     <textarea class="form-control" rows="3" required="" name="text"></textarea>

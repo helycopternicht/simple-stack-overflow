@@ -1,5 +1,6 @@
 package com.elazarev.controllers;
 
+import com.elazarev.Paths;
 import com.elazarev.domain.Tag;
 import com.elazarev.domain.User;
 import com.elazarev.exceptions.ResourceNotFoundException;
@@ -24,20 +25,16 @@ import java.util.Optional;
  * @since 21.02.18
  */
 @Controller
-@RequestMapping("/tags")
 public class TagController {
 
     private TagsService tagService;
 
-    private UserService userService;
-
     @Autowired
-    public TagController(TagsService service, UserService userService) {
+    public TagController(TagsService service) {
         this.tagService = service;
-        this.userService = userService;
     }
 
-    @GetMapping("")
+    @GetMapping(Paths.PATH_TAGS_ALL)
     public String index(@RequestParam Optional<Integer> page, Model model) {
         Map<String, String> pager = new HashMap<>();
         pager.put("prevUrl", "/tags&page=" +(page.orElse(1) - 1));
@@ -47,15 +44,16 @@ public class TagController {
         return "tag/tags";
     }
 
-    @GetMapping("/{name}")
+    @GetMapping(Paths.PATH_TAGS_SHOW)
     public String details(@PathVariable String name, Model model) {
         model.addAttribute("tag", tagService.getTagByName(name));
         return "tag/details";
     }
 
-    @GetMapping("/subscribe/{name}")
-    public String subscribe(@PathVariable String name, Principal principal) {
+    @GetMapping(Paths.PATH_TAGS_SUBSCRIBE)
+    public String subscribe(@PathVariable String name, Principal principal, Model model) {
         tagService.subscribe(principal, name);
-        return "redirect:/tags/" + name;
+        model.addAttribute("tag", tagService.getTagByName(name));
+        return "tag/details";
     }
 }
