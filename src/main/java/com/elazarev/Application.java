@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
@@ -21,6 +22,7 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+    // for thymeleaf works with datetime API
     @Bean
     public TemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
@@ -28,10 +30,10 @@ public class Application {
         engine.setTemplateResolver(templateResolver);
         return engine;
     }
+    // for security works with thymeleaf
+    @Bean
+    public SpringSecurityDialect springSecurityDialect(){
+        return new SpringSecurityDialect();
+    }
 
-//    @Bean
-//    public SimpleMappingExceptionResolver exceptionResolver() {
-//        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
-//        resolver.;
-//    }
 }

@@ -32,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/questions",
                 "/questions/search",
                 "/questions/show/{id}",
+                "/users",
                 "/users/{name}",
                 "/tags",
                 "/tags/{name}",

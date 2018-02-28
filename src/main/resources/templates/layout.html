@@ -22,14 +22,8 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Questions <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a th:href="@{${T(com.elazarev.Paths).PATH_QUESTIONS_ALL}}">All questions</a></li>
-                            <li><a th:href="@{${T(com.elazarev.Paths).PATH_MY_FEED}}">My feed</a></li>
-                        </ul>
-                    </li>
-
+                    <li><a th:href="@{${T(com.elazarev.Paths).PATH_QUESTIONS_ALL}}">All questions</a></li>
+                    <li><a th:href="@{${T(com.elazarev.Paths).PATH_MY_FEED}}" sec:authorize="isAuthenticated()" >My feed</a></li>
                     <li><a th:href="@{${T(com.elazarev.Paths).PATH_TAGS_ALL}}">Tags</a></li>
                     <li><a th:href="@{${T(com.elazarev.Paths).PATH_USERS_ALL}}">Users</a></li>
                 </ul>
@@ -43,12 +37,12 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li><a class="btn btn-default" th:href="@{${T(com.elazarev.Paths).PATH_QUESTIONS_ADD}}" role="button">New question</a></li>
-                    <li><a th:href="@{${T(com.elazarev.Paths).PATH_LOGIN}}">Sign in</a></li>
-                    <li><a th:href="@{${T(com.elazarev.Paths).PATH_REGISTER}}">Register</a></li>
-                    <li class="dropdown">
+                    <li><a th:href="@{${T(com.elazarev.Paths).PATH_LOGIN}}" sec:authorize="!isAuthenticated()" >Sign in</a></li>
+                    <li><a th:href="@{${T(com.elazarev.Paths).PATH_REGISTER}}" sec:authorize="!isAuthenticated()">Register</a></li>
+                    <li class="dropdown" sec:authorize="isAuthenticated()">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a th:href="@{${T(com.elazarev.Paths).PATH_MY_PROFILE}}">My profile</a></li>
+                            <li><a th:href="@{${T(com.elazarev.Paths).PATH_MY_PROFILE}}" sec:authorize="isAuthenticated()" >My profile</a></li>
                             <li><a th:href="@{${T(com.elazarev.Paths).PATH_LOGOUT}}">Logout</a></li>
                         </ul>
                     </li>
