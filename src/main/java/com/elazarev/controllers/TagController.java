@@ -28,18 +28,22 @@ import java.util.Optional;
 @RequestMapping("/tags")
 public class TagController {
 
-    @Autowired
     private TagsService service;
 
-    @Autowired
     private UserService userService;
 
+    @Autowired
+    public TagController(TagsService service, UserService userService) {
+        this.service = service;
+        this.userService = userService;
+    }
+
     @GetMapping("")
-    public String index(@RequestParam Optional<Integer> page, Model model) throws ResourceNotFoundException {
+    public String index(@RequestParam Optional<Integer> page, Model model) {
 
         Page<Tag> tags = service.findAll(page.orElse(1));
-        if (tags.getSize() == 0) {
-            throw new ResourceNotFoundException();
+        if (tags.getNumberOfElements() == 0) {
+            throw new ResourceNotFoundException("Page not found");
         }
 
         Map<String, String> pager = new HashMap<>();
@@ -51,19 +55,19 @@ public class TagController {
     }
 
     @GetMapping("/{name}")
-    public String details(@PathVariable String name, Model model) throws ResourceNotFoundException {
+    public String details(@PathVariable String name, Model model) {
         Tag tag = service.findByName(name);
         if (tag == null) {
-            throw new ResourceNotFoundException();
+            throw new ResourceNotFoundException("Tag not found");
         }
         model.addAttribute("tag", tag);
         return "tag/details";
     }
 
     @GetMapping("/subscribe/{id}")
-    public String subscribe(@PathVariable Long id, Principal principal) throws ResourceNotFoundException {
+    public String subscribe(@PathVariable Long id, Principal principal) {
         Optional<Tag> tag = service.findById(id);
-        tag.orElseThrow(() -> new ResourceNotFoundException());
+        tag.orElseThrow(() -> new ResourceNotFoundException("Not found"));
 
         if (principal == null) {
             return "redirect:/login";

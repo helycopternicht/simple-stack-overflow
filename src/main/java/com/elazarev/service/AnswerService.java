@@ -1,6 +1,8 @@
 package com.elazarev.service;
 
 import com.elazarev.domain.Answer;
+import com.elazarev.domain.Question;
+import com.elazarev.exceptions.ResourceNotFoundException;
 import com.elazarev.repository.AnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +23,12 @@ public class AnswerService {
         this.answerRepo = answerRepo;
     }
 
-    public Optional<Answer> findById(Long id) {
-        return answerRepo.findById(id);
+    public Answer findById(Long id) {
+        return answerRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Answer with id " + id + " not found"));
     }
 
-    public void save(Answer a) {
-        answerRepo.save(a);
+    public Long save(Answer a) {
+        Answer created =  answerRepo.save(a);
+        return created.getId();
     }
 }

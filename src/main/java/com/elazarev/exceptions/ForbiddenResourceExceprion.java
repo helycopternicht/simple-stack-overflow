@@ -5,12 +5,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
- * @since 22.02.18
+ * @since 28.02.18
  */
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class ResourceNotFoundException extends RuntimeException {
-
-    public ResourceNotFoundException(String message) {
+@ResponseStatus(HttpStatus.FORBIDDEN)
+public class ForbiddenResourceExceprion extends RuntimeException {
+    public ForbiddenResourceExceprion(String message) {
         super(message);
     }
 }

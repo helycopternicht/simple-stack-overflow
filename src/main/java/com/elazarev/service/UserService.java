@@ -1,6 +1,8 @@
 package com.elazarev.service;
 
+import com.elazarev.domain.Question;
 import com.elazarev.domain.User;
+import com.elazarev.exceptions.ForbiddenResourceExceprion;
 import com.elazarev.repository.RoleRepository;
 import com.elazarev.repository.UserRepository;
 import com.elazarev.security.excepttions.UserAlreadyExistsException;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -59,4 +62,25 @@ public class UserService {
     public void save(User u) {
         repo.save(u);
     }
+
+    public User getUser(Principal p) throws ForbiddenResourceExceprion {
+        if (p == null) {
+            throw new ForbiddenResourceExceprion("You are not authorized");
+        }
+        return findUserByLogin(p.getName());
+    }
+
+    public boolean isQuestionOfUser(Question q, Principal u) {
+        if (u == null) {
+            return false;
+        }
+
+        User user = getUser(u);
+        if (user.equals(q.getAuthor())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

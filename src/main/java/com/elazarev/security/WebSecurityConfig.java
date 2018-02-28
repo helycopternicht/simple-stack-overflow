@@ -1,5 +1,7 @@
 package com.elazarev.security;
 
+import com.elazarev.domain.User;
+import com.elazarev.exceptions.UserNotFoundException;
 import com.elazarev.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,30 +30,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //todo: разобраться с настройкой роутов, потому что работает криво
         http
-                .authorizeRequests()
-                .antMatchers(
-                        "/",
-                        "/questions/",
-                        "/questions/page/**",
-                        "/registration",
-                        "/questions/show/{id}",
-                        "/users/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/questions/").permitAll();
+//                .authorizeRequests()
+//                .antMatchers(
+//                        "/",
+//                        "/questions/",
+//                        "/questions/page/**",
+//                        "/registration",
+//                        "/questions/show/{id}",
+//                        "/users/**").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin().loginPage("/login").defaultSuccessUrl("/questions/").permitAll();
+
+        .authorizeRequests().anyRequest().permitAll().and().formLogin().loginPage("/login").permitAll();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-                com.elazarev.domain.User u = userService.findUserByLogin(s);
-                if (u != null) {
-                    return u;
-                }
-                throw new UsernameNotFoundException("User not found: " + s);
+        return s -> {
+            User u = userService.findUserByLogin(s);
+            if (u != null) {
+                return u;
             }
+            throw new UserNotFoundException("User not found: " + s);
         };
     }
 

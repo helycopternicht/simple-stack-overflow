@@ -54,13 +54,14 @@
                         <span class="glyphicon glyphicon-ok" th:if="${answer.getSolution()}"></span>
                     </h4>
                     <p th:text="${answer.text}"></p>
-                    <form th:action="@{/questions/answer/like}" method="post">
+                    <form th:action="@{/questions/answer/like}" method="post" class="form-inline">
                         <input type="hidden" th:value="${answer.id}" name="answer_id">
                         <input type="hidden" th:value="${question.id}" name="question_id">
                         <button class="btn btn-info" th:text="'Like | ' + ${answer.liked.size()}"><span class="glyphicon glyphicon-thumbs-up"></span></button>
                     </form>
-                    <form th:action="@{/questions/answer/solution}" method="post" th:if="${isYour}">
+                    <form th:action="@{/questions/answer/solution}" method="post" th:if="${addSolutionButton}" class="form-inline">
                         <input type="hidden" name="answer_id" th:value="${answer.id}">
+                        <input type="hidden" th:value="${question.id}" name="question_id">
                         <button type="submit" class="btn btn-success">Solution!</button>
                     </form>
                     <br>

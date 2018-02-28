@@ -58,6 +58,15 @@ public class Question {
         return false;
     }
 
+    public boolean userSubscribed(User u) {
+        for (User user : this.getSubscribers()) {
+            if (user.equals(u)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Long getId() {
         return id;
     }

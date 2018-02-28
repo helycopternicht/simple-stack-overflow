@@ -2,9 +2,10 @@ package com.elazarev.service;
 
 import com.elazarev.domain.Tag;
 import com.elazarev.repository.TagRepository;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +64,23 @@ public class TagsServiceTest {
 
     @Test
     public void findAll() throws Exception {
+        Page<Tag> pageOne = mock(Page.class);
+        when(pageOne.getNumber()).thenReturn(0);
 
+        Page<Tag> pageTwo = mock(Page.class);
+        when(pageTwo.getNumber()).thenReturn(1);
+
+        PageRequest requestOne = PageRequest.of(0, TagsService.MAX_TAG_SIZE_PER_PAGE);
+        PageRequest requestTwo = PageRequest.of(1, TagsService.MAX_TAG_SIZE_PER_PAGE);
+
+        when(tagRepository.findAll(eq(requestOne))).thenReturn(pageOne);
+        when(tagRepository.findAll(eq(requestTwo))).thenReturn(pageTwo);
+
+        assertEquals(tagService.findAll(1), pageOne);
+        assertEquals(tagService.findAll(2), pageTwo);
+
+        verify(tagRepository).findAll(eq(requestOne));
+        verify(tagRepository).findAll(eq(requestTwo));
     }
 
     @Test

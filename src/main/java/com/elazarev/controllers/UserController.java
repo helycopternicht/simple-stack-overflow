@@ -2,6 +2,7 @@ package com.elazarev.controllers;
 
 import com.elazarev.domain.Question;
 import com.elazarev.domain.User;
+import com.elazarev.exceptions.ResourceNotFoundException;
 import com.elazarev.service.QuestionService;
 import com.elazarev.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class UserController {
     public String details(Model model, @PathVariable String name) {
 
         Optional<User> user = Optional.ofNullable(userService.findUserByLogin(name));
-        user.orElseThrow(() -> new UsernameNotFoundException("User with name " + name + "not found"));
+        user.orElseThrow(() -> new ResourceNotFoundException("User with name " + name + "not found"));
 
         model.addAttribute("user", user.get());
         model.addAttribute("questionsWithUserAnswer", questionService.findAllWhereAuthorIs(user.get()));

@@ -1,16 +1,22 @@
 package com.elazarev.controllers;
 
+import com.elazarev.domain.Question;
 import com.elazarev.domain.User;
+import com.elazarev.exceptions.ResourceNotFoundException;
 import com.elazarev.service.QuestionService;
 import com.elazarev.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.Optional;
 
 /**
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
@@ -20,21 +26,24 @@ import java.security.Principal;
 @RequestMapping(path = "/my")
 public class PersonalController {
 
-    @Autowired
     private QuestionService questionService;
 
-    @Autowired
     private UserService userService;
 
-    @GetMapping("/feed")
-    public String myFeed(Model model, Principal principal) {
-        return myFeedPaged(1, model, principal);
+    @Autowired
+    public PersonalController(QuestionService questionService, UserService userService) {
+        this.questionService = questionService;
+        this.userService = userService;
     }
 
-    @GetMapping("/feed/{page}")
-    public String myFeedPaged(@PathVariable int page, Model model, Principal principal) {
-        User user = userService.findUserByLogin(principal.getName());
-        model.addAttribute("paginator", questionService.getMyFeedPaged(page, user));
+    @GetMapping("/feed")
+    public String myFeedPaged(@RequestParam Optional<Integer> page, Model model, Principal principal) {
+        User user = userService.getUser(principal);
+        Page<Question> paginator = questionService.getMyFeedPaged(page.orElse(1), user);
+        if (paginator.getNumberOfElements() == 0) {
+            throw new ResourceNotFoundException("Not found");
+        }
+        model.addAttribute("paginator", paginator);
         return "/question/questions";
     }
 

@@ -45,6 +45,15 @@ public class Answer {
     public Answer() {
     }
 
+    public boolean hasFan(User user) {
+        for (User u : this.getLiked()) {
+            if (u.equals(user)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Long getId() {
         return id;
     }
