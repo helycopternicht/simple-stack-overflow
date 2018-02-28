@@ -13,7 +13,7 @@ import java.util.TreeSet;
  */
 @Entity
 @Table(name = "answers")
-public class Answer {
+public class Answer implements Comparable<Answer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -131,5 +131,25 @@ public class Answer {
     @Override
     public int hashCode() {
         return getId().hashCode();
+    }
+
+    @Override
+    public int compareTo(Answer o) {
+        if (this.getSolution() && o.getSolution()) {
+            int likedSize = o.getLiked().size() - this.getLiked().size();
+            if (likedSize == 0) {
+                return this.getCreateDate().compareTo(o.getCreateDate());
+            } else {
+                return likedSize;
+            }
+        }
+
+        if (this.getSolution()) {
+            return -1;
+        } else if (o.getSolution()){
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

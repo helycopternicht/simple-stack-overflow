@@ -43,8 +43,7 @@ public class Question {
     private Set<User> subscribers = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question", fetch = FetchType.EAGER)
-    @OrderBy("createDate asc")
-    private Set<Answer> answers = new HashSet<>();
+    private Set<Answer> answers = new TreeSet<>();
 
     public Question() {
     }
@@ -56,6 +55,11 @@ public class Question {
             }
         }
         return false;
+    }
+
+    public Collection<Answer> getSortedAnswers() {
+        Collection<Answer> result = new TreeSet<>(this.answers);
+        return result;
     }
 
     public boolean userSubscribed(User u) {

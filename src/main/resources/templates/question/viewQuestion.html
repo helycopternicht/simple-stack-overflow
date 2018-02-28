@@ -42,7 +42,7 @@
 
         <div class="row">
 
-            <div class="answer" th:each="answer : ${question.answers}">
+            <div class="answer" th:each="answer : ${question.getSortedAnswers()}">
                 <div class="col-sm-2 text-center">
                     <img th:src="${answer.author.photoUrl}" class="img-circle" height="65" width="65" alt="Avatar">
                 </div>
