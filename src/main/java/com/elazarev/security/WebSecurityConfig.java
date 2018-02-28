@@ -26,21 +26,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //todo: разобраться с настройкой роутов, потому что работает криво
-        http
-//                .authorizeRequests()
-//                .antMatchers(
-//                        "/",
-//                        "/questions/",
-//                        "/questions/page/**",
-//                        "/registration",
-//                        "/questions/show/{id}",
-//                        "/users/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().loginPage("/login").defaultSuccessUrl("/questions/").permitAll();
 
-        .authorizeRequests().anyRequest().permitAll().and().formLogin().loginPage("/login").permitAll().and().logout().permitAll();
+        String[] freeRotes = new String[]{
+                "/",
+                "/questions",
+                "/questions/search",
+                "/questions/show/{id}",
+                "/users/{name}",
+                "/tags",
+                "/tags/{name}",
+                "/login",
+                "/logout",
+                "/registration" };
+
+
+        http.authorizeRequests()
+                .antMatchers(freeRotes).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().loginPage("/login").successForwardUrl("/").permitAll()
+                .and()
+                .logout().logoutSuccessUrl("/").permitAll()
+                .and()
+                .exceptionHandling().accessDeniedPage("/login");
     }
 
     @Bean
