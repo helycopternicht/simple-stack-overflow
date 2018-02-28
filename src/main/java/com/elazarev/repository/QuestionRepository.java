@@ -20,6 +20,4 @@ public interface QuestionRepository extends PagingAndSortingRepository<Question,
     Page<Question> findByTagsIn(Collection<Tag> tags, Pageable pageable);
 
     Page<Question> findByTitleStartsWith(String s, Pageable pageable);
-
-    Collection<Question> findAllByAuthorEquals(User u);
 }

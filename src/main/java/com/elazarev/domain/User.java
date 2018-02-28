@@ -67,6 +67,15 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public boolean subscribedToTag(Tag t) {
+        for (Tag tag : tags) {
+            if (tag.equals(t)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Long getId() {
         return id;
     }

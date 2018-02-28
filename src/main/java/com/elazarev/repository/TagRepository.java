@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Set;
 @Repository
 public interface TagRepository extends PagingAndSortingRepository<Tag, Long> {
 
-    Tag findByName(String name);
+    Optional<Tag> findByName(String name);
 
     List<Tag> findAllByNameIn(Collection<String> names);
 }

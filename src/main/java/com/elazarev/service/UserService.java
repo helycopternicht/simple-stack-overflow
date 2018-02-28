@@ -3,11 +3,11 @@ package com.elazarev.service;
 import com.elazarev.domain.Question;
 import com.elazarev.domain.User;
 import com.elazarev.exceptions.ForbiddenResourceExceprion;
+import com.elazarev.exceptions.ResourceNotFoundException;
 import com.elazarev.repository.RoleRepository;
 import com.elazarev.repository.UserRepository;
 import com.elazarev.security.excepttions.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -38,17 +36,25 @@ public class UserService {
         this.roleRepo = roleRepo;
     }
 
-    public Optional<User> findById(Long id) {
-        return repo.findById(id);
+    public User findByLogin(String name) throws ResourceNotFoundException {
+        Optional<User> user = repo.findUserByLogin(name);
+        return user.orElseThrow(() -> new ResourceNotFoundException("User with name " + name + "not found"));
     }
 
-    public User findUserByLogin(String name) {
-        return repo.findUserByLogin(name);
+    public User getUser(Principal p) throws ForbiddenResourceExceprion {
+        if (p == null) {
+            throw new ForbiddenResourceExceprion("You are not authorized");
+        }
+        return findByLogin(p.getName());
     }
 
-    public Page<User> findAllPaged(int page) {
-        Pageable p = PageRequest.of(page - 1, MAX_USERS_PER_PAGE, Sort.Direction.DESC, "id");
-        return repo.findAll(p);
+    public Page<User> getPage(Optional<Integer> page) throws ResourceNotFoundException {
+        Pageable p = PageRequest.of(page.orElse(1) - 1, MAX_USERS_PER_PAGE, Sort.Direction.DESC, "id");
+        Page<User> currentPage = repo.findAll(p);
+        if (currentPage.getNumberOfElements() == 0) {
+            throw new ResourceNotFoundException("page not found");
+        }
+        return currentPage;
     }
 
     public User createUser(User u) throws UserAlreadyExistsException {
@@ -61,13 +67,6 @@ public class UserService {
 
     public void save(User u) {
         repo.save(u);
-    }
-
-    public User getUser(Principal p) throws ForbiddenResourceExceprion {
-        if (p == null) {
-            throw new ForbiddenResourceExceprion("You are not authorized");
-        }
-        return findUserByLogin(p.getName());
     }
 
     public boolean isQuestionOfUser(Question q, Principal u) {

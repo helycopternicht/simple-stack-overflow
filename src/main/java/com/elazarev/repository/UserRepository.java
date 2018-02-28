@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
  * @since 14.02.18
@@ -12,5 +14,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
-    User findUserByLogin(String name);
+    Optional<User> findUserByLogin(String name);
 }

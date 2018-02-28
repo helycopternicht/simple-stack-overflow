@@ -54,7 +54,7 @@
         </div>
 
         <div id="answers">
-            <div class="row" th:each="question: ${questionsWithUserAnswer}">
+            <div class="row" th:each="question: ${user.questions}">
                 <div class="col-span-5">
                     <h2>
                         <a th:href="@{/questions/show/{id}(id=${question.id})}" th:text="${question.title}"></a>

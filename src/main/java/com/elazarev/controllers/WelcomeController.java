@@ -12,7 +12,7 @@ public class WelcomeController {
 
     @RequestMapping(path = "/")
     public String welcome() {
-        return "forward:/questions";
+        return "redirect:/questions";
     }
 
 }

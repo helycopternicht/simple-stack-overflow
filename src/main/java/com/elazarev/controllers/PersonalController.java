@@ -28,28 +28,20 @@ public class PersonalController {
 
     private QuestionService questionService;
 
-    private UserService userService;
-
     @Autowired
-    public PersonalController(QuestionService questionService, UserService userService) {
+    public PersonalController(QuestionService questionService) {
         this.questionService = questionService;
-        this.userService = userService;
     }
 
     @GetMapping("/feed")
     public String myFeedPaged(@RequestParam Optional<Integer> page, Model model, Principal principal) {
-        User user = userService.getUser(principal);
-        Page<Question> paginator = questionService.getMyFeedPaged(page.orElse(1), user);
-        if (paginator.getNumberOfElements() == 0) {
-            throw new ResourceNotFoundException("Not found");
-        }
-        model.addAttribute("paginator", paginator);
+        model.addAttribute("paginator", questionService.getMyFeedPage(page, principal));
         return "/question/questions";
     }
 
     @GetMapping("/profile")
-    public String profile(Principal principal) {
+    public String profile(Principal p) {
+        // todo: implement profile
         return null;
     }
-
 }

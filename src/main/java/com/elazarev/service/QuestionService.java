@@ -49,16 +49,26 @@ public class QuestionService {
 
     public static final int MAX_QUESTIONS_PER_PAGE = 10;
 
-    public Question getById(Long id) {
+    public Question getById(Long id) throws ResourceNotFoundException {
         Optional<Question> question = questionRepository.findById(id);
         return question.orElseThrow(() -> new ResourceNotFoundException("Question with " + id + " not found."));
     }
 
-    public Page<Question> getMyFeedPaged(int page, User user) {
-        return questionRepository.findByTagsIn(user.getTags(), PageRequest.of(page - 1, MAX_QUESTIONS_PER_PAGE, Sort.Direction.DESC, "createDate"));
+    public Page<Question> getMyFeedPage(Optional<Integer> page, Principal p) throws ResourceNotFoundException {
+        User user = userService.getUser(p);
+        Page<Question> currentPage = questionRepository.findByTagsIn(user.getTags(),
+                PageRequest.of(page.orElse(1) - 1,
+                        MAX_QUESTIONS_PER_PAGE,
+                        Sort.Direction.DESC,
+                        "createDate"));
+
+        if (currentPage.getNumberOfElements() == 0) {
+            throw new ResourceNotFoundException("Page not found");
+        }
+        return currentPage;
     }
 
-    public Page<Question> getQuestionPaged(Optional<Integer> page) {
+    public Page<Question> getQuestionPaged(Optional<Integer> page) throws ResourceNotFoundException {
         Page<Question> dataPage = questionRepository.findAll(
                 PageRequest.of(
                         page.orElse(1) - 1,
@@ -72,10 +82,13 @@ public class QuestionService {
         return dataPage;
     }
 
-    public long saveWithTags(Question q, String tagList) {
-        Iterable<Tag> it = tagsService.saveTags(tagList.split(","));
-        it.forEach(tag -> q.getTags().add(tag));
-        return questionRepository.save(q).getId();
+    public Page<Question> search(String condition, Optional<Integer> page) throws ResourceNotFoundException {
+        Pageable p = PageRequest.of(page.orElse(1) - 1, MAX_QUESTIONS_PER_PAGE, Sort.Direction.DESC, "createDate");
+        Page<Question> result = questionRepository.findByTitleStartsWith(condition, p);
+        if (result.getNumberOfElements() == 0) {
+            throw new ResourceNotFoundException("Page not found");
+        }
+        return result;
     }
 
     public boolean subscribe(Long qId, Principal p) {
@@ -105,7 +118,7 @@ public class QuestionService {
     }
 
     public boolean markAsSolution (Principal p, Long answerId) {
-
+        // todo: maybe it should be in answer service...
         User user = userService.getUser(p);
         Answer answer = answerService.findById(answerId);
         User questionAuthor = answer.getQuestion().getAuthor();
@@ -117,19 +130,6 @@ public class QuestionService {
         answer.setSolution(true);
         answerService.save(answer);
         return true;
-    }
-
-    public Page<Question> search(String condition, Optional<Integer> page) {
-        Pageable p = PageRequest.of(page.orElse(1) - 1, MAX_QUESTIONS_PER_PAGE, Sort.Direction.DESC, "createDate");
-        Page<Question> result = questionRepository.findByTitleStartsWith(condition, p);
-        if (result.getNumberOfElements() == 0) {
-            throw new ResourceNotFoundException("Page not found");
-        }
-        return result;
-    }
-
-    public Collection<Question> findAllWhereAuthorIs(User u) {
-        return questionRepository.findAllByAuthorEquals(u);
     }
 
     public Long createQuestion(String title, String desc, String tags, Principal p) {
@@ -145,7 +145,14 @@ public class QuestionService {
         return saveWithTags(q, tags);
     }
 
+    private long saveWithTags(Question q, String tagList) {
+        Iterable<Tag> it = tagsService.saveTags(tagList.split(","));
+        it.forEach(tag -> q.getTags().add(tag));
+        return questionRepository.save(q).getId();
+    }
+
     public Long createAnswer(Long qId, String text, Principal p) {
+        // todo: maybe it should be in answer service...
         Question question = getById(qId);
         User author = userService.getUser(p);
 
