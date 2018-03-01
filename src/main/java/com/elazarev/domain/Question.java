@@ -1,5 +1,7 @@
 package com.elazarev.domain;
 
+import com.elazarev.utils.AnswerComparator;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -58,7 +60,8 @@ public class Question {
     }
 
     public Collection<Answer> getSortedAnswers() {
-        Collection<Answer> result = new TreeSet<>(this.answers);
+        Set<Answer> result = new TreeSet<>(new AnswerComparator());
+        result.addAll(answers);
         return result;
     }
 

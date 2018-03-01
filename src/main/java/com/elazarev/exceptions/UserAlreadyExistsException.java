@@ -1,4 +1,4 @@
-package com.elazarev.security.excepttions;
+package com.elazarev.exceptions;
 
 /**
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)

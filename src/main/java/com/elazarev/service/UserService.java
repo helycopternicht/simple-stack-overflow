@@ -6,7 +6,7 @@ import com.elazarev.exceptions.ForbiddenResourceExceprion;
 import com.elazarev.exceptions.ResourceNotFoundException;
 import com.elazarev.repository.RoleRepository;
 import com.elazarev.repository.UserRepository;
-import com.elazarev.security.excepttions.UserAlreadyExistsException;
+import com.elazarev.exceptions.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.security.Principal;
 import java.util.Optional;
 

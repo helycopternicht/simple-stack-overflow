@@ -1,23 +1,7 @@
 package com.elazarev.service;
 
-import com.elazarev.domain.Role;
-import com.elazarev.domain.User;
-import com.elazarev.repository.RoleRepository;
-import com.elazarev.repository.UserRepository;
-import com.elazarev.security.excepttions.UserAlreadyExistsException;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-
-
-import java.util.HashSet;
-import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
