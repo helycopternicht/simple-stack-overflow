@@ -4,6 +4,7 @@ import com.elazarev.Paths;
 import com.elazarev.domain.Question;
 import com.elazarev.domain.User;
 import com.elazarev.exceptions.ResourceNotFoundException;
+import com.elazarev.security.RegisterUserForm;
 import com.elazarev.service.QuestionService;
 import com.elazarev.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -28,9 +26,12 @@ public class PersonalController {
 
     private QuestionService questionService;
 
+    private UserService userService;
+
     @Autowired
-    public PersonalController(QuestionService questionService) {
+    public PersonalController(QuestionService questionService, UserService userService) {
         this.questionService = questionService;
+        this.userService = userService;
     }
 
     @GetMapping(Paths.PATH_MY_FEED)
@@ -40,8 +41,14 @@ public class PersonalController {
     }
 
     @GetMapping(Paths.PATH_MY_PROFILE)
-    public String profile(Principal p) {
-        // todo: implement profile
-        return null;
+    public String profile(Principal p, Model model) {
+        model.addAttribute("user", userService.getUser(p));
+        return "user/profile";
+    }
+
+    @PostMapping(Paths.PATH_MY_PROFILE)
+    public String saveProfile(@ModelAttribute User form, Principal principal) {
+        userService.saveOnlyChangedFields(form, principal);
+        return "redirect:" + Paths.PATH_QUESTIONS_ALL;
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.security.Principal;
 import java.util.Optional;
 
@@ -67,6 +68,30 @@ public class UserService {
 
     public void save(User u) {
         repo.save(u);
+    }
+
+    public void saveOnlyChangedFields(User source, Principal p) {
+        User receiver = getUser(p);
+
+        if (!receiver.getFirstName().equals(source.getFirstName())) {
+            receiver.setFirstName(source.getFirstName());
+        }
+        if (!receiver.getLastName().equals(source.getLastName())) {
+            receiver.setLastName(source.getLastName());
+        }
+
+        if (!receiver.getPhotoUrl().equals(source.getPhotoUrl())) {
+            receiver.setPhotoUrl(source.getPhotoUrl());
+        }
+
+        if (!receiver.getEmail().equals(source.getEmail())) {
+            receiver.setEmail(source.getEmail());
+        }
+
+        if (!receiver.getAbout().equals(source.getAbout())) {
+            receiver.setAbout(source.getAbout());
+        }
+        save(receiver);
     }
 
     public boolean isQuestionOfUser(Question q, Principal u) {
