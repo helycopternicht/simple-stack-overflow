@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Not found</title>
+    <meta charset="utf-8">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <div class="hero-unit center">
+                <h1>Oops!</h1>
+                <br />
+                <p th:text="${message}"></p>
+                <p><b>You could just press this neat little button:</b></p>
+                <a th:href="@{/}" class="btn btn-large btn-info"><i class="icon-home icon-white"></i> Home page</a>
+            </div>
+        </div>
+    </div>
+</div>

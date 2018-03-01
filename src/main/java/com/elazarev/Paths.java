@@ -12,7 +12,7 @@ public class Paths {
     // question controller
     public static final String PATH_QUESTIONS_ALL = "/questions";
     public static final String PATH_QUESTIONS_SEARCH = "/questions/search";
-    public static final String PATH_QUESTIONS_SHOW = "/questions/show/{id}";
+    public static final String PATH_QUESTIONS_SHOW = "/questions/{id}";
     public static final String PATH_QUESTIONS_ADD = "/questions/add";
 
     public static final String PATH_QUESTIONS_ANSWER_ADD = "/questions/answer";

@@ -3,7 +3,10 @@ package com.elazarev;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
@@ -35,5 +38,4 @@ public class Application {
     public SpringSecurityDialect springSecurityDialect(){
         return new SpringSecurityDialect();
     }
-
 }
