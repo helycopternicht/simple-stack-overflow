@@ -27,9 +27,6 @@ import javax.validation.Valid;
 public class SecurityController {
 
     @Autowired
-    PasswordEncoder encoder;
-
-    @Autowired
     UserService userService;
 
     @RequestMapping("/login")
@@ -51,7 +48,7 @@ public class SecurityController {
             return "/auth/registration";
         }
 
-        User newUser = registerUserForm.constructUser(encoder);
+        User newUser = registerUserForm.constructUser();
         try {
             userService.createUser(newUser);
         } catch (UserAlreadyExistsException e) {

@@ -1,6 +1,7 @@
 package com.elazarev.security;
 
 import com.elazarev.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
@@ -12,6 +13,9 @@ import javax.validation.constraints.Size;
  * @since 19.02.18
  */
 public class RegisterUserForm {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @NotNull
     @Size(min = 2, max = 30, message = "Login should be longer than 2 charachters")
     private String login;
@@ -88,10 +92,10 @@ public class RegisterUserForm {
         this.photoUrl = photoUrl;
     }
 
-    public User constructUser(PasswordEncoder encoder) {
+    public User constructUser() {
         User user = new User();
         user.setLogin(this.getLogin());
-        user.setPassword(encoder.encode(this.getPassword()));
+        user.setPassword(passwordEncoder.encode(this.getPassword()));
         user.setEmail(this.getEmail());
         user.setFirstName(this.getFirstName());
         user.setLastName(this.getLastName());
