@@ -22,7 +22,7 @@
                 <div class="col-span-5">
                     <h2>
                         <a th:href="@{${T(com.elazarev.Paths).PATH_QUESTIONS_SHOW}(id=${question.id})}" th:text="${question.title}"></a>
-                        <span class="glyphicon glyphicon-ok" th:if="${question.hasAnswer()}"></span></h2>
+                        <span class="glyphicon glyphicon-ok" th:if="${question.hasSolution()}"></span></h2>
                     <h5>
                         <a th:href="@{${T(com.elazarev.Paths).PATH_USERS_SHOW}(name=${question.author.login})}" th:text="${question.author}"></a>
                         <span class="gelycon gelycon-time" th:text="${#temporals.format(question.createDate, 'dd MMM yyyy HH:mm')}"></span>

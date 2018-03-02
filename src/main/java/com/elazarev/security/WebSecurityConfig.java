@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         String[] freeRotes = new String[]{
                 "/",
                 "/questions",
-                "/questions/search",
+                "/questions/searchPage",
                 "/questions/{id}",
                 "/users",
                 "/users/{name}",

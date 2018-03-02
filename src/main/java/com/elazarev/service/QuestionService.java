@@ -14,10 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -82,7 +80,7 @@ public class QuestionService {
         return dataPage;
     }
 
-    public Page<Question> search(String condition, Optional<Integer> page) throws ResourceNotFoundException {
+    public Page<Question> searchPage(String condition, Optional<Integer> page) throws ResourceNotFoundException {
         Pageable p = PageRequest.of(page.orElse(1) - 1, MAX_QUESTIONS_PER_PAGE, Sort.Direction.DESC, "createDate");
         Page<Question> result = questionRepository.findByTitleStartsWith(condition, p);
         if (result.getNumberOfElements() == 0) {
@@ -146,7 +144,7 @@ public class QuestionService {
     }
 
     private long saveWithTags(Question q, String tagList) {
-        Iterable<Tag> it = tagsService.saveTags(tagList.split(","));
+        Iterable<Tag> it = tagsService.createTags(tagList.split(","));
         it.forEach(tag -> q.getTags().add(tag));
         return questionRepository.save(q).getId();
     }

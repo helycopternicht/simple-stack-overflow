@@ -29,9 +29,12 @@ public class TagController {
 
     private TagsService tagService;
 
+    private UserService userService;
+
     @Autowired
-    public TagController(TagsService service) {
+    public TagController(TagsService service,UserService userService) {
         this.tagService = service;
+        this.userService = userService;
     }
 
     @GetMapping(Paths.PATH_TAGS_ALL)
@@ -52,7 +55,7 @@ public class TagController {
 
     @GetMapping(Paths.PATH_TAGS_SUBSCRIBE)
     public String subscribe(@PathVariable String name, Principal principal, Model model) {
-        tagService.subscribe(principal, name);
+        userService.subscribe(principal, name);
         model.addAttribute("tag", tagService.getTagByName(name));
         return "tag/details";
     }

@@ -1,25 +1,16 @@
 package com.elazarev.controllers;
 
 import com.elazarev.Paths;
-import com.elazarev.domain.Answer;
 import com.elazarev.domain.Question;
-import com.elazarev.domain.User;
-import com.elazarev.exceptions.ResourceNotFoundException;
-import com.elazarev.service.AnswerService;
 import com.elazarev.service.QuestionService;
 import com.elazarev.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.nio.file.Path;
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -62,7 +53,7 @@ public class QuestionController {
         pager.put("prevUrl", Paths.PATH_QUESTIONS_SEARCH + "?searchText=" + searchText + "&page=" +(page.orElse(1) - 1));
         pager.put("nextUrl", Paths.PATH_QUESTIONS_SEARCH + "?searchText=" + searchText + "&page=" +(page.orElse(1) + 1));
 
-        model.addAttribute("paginator", questionService.search(searchText, page));
+        model.addAttribute("paginator", questionService.searchPage(searchText, page));
         model.addAttribute("pager", pager);
         return "/question/questions";
     }

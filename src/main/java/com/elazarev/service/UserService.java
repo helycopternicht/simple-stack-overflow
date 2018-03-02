@@ -1,6 +1,7 @@
 package com.elazarev.service;
 
 import com.elazarev.domain.Question;
+import com.elazarev.domain.Tag;
 import com.elazarev.domain.User;
 import com.elazarev.exceptions.ForbiddenResourceExceprion;
 import com.elazarev.exceptions.ResourceNotFoundException;
@@ -30,10 +31,13 @@ public class UserService {
 
     private RoleRepository roleRepo;
 
+    private TagsService tagsService;
+
     @Autowired
-    public UserService(UserRepository repo, RoleRepository roleRepo) {
+    public UserService(UserRepository repo, RoleRepository roleRepo, TagsService tagsService) {
         this.repo = repo;
         this.roleRepo = roleRepo;
+        this.tagsService = tagsService;
     }
 
     public User findByLogin(String name) throws ResourceNotFoundException {
@@ -104,6 +108,19 @@ public class UserService {
         } else {
             return false;
         }
+    }
+
+    public boolean subscribe(Principal p, String tagName) {
+        Tag tag = tagsService.getTagByName(tagName);
+        User user = getUser(p);
+
+        if (user.subscribedToTag(tag)) {
+            return false;
+        }
+
+        user.getTags().add(tag);
+        save(user);
+        return true;
     }
 
 }

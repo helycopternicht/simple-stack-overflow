@@ -50,7 +50,7 @@ public class Question {
     public Question() {
     }
 
-    public boolean hasAnswer() {
+    public boolean hasSolution() {
         for (Answer a : answers) {
             if (a.getSolution()) {
                 return true;
