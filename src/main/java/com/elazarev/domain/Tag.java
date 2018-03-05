@@ -88,4 +88,19 @@ public class Tag implements Comparable<Tag> {
     public int compareTo(Tag o) {
         return this.getName().compareTo(o.getName());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tag tag = (Tag) o;
+
+        return getName() != null ? getName().equals(tag.getName()) : tag.getName() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getName() != null ? getName().hashCode() : 0;
+    }
 }
