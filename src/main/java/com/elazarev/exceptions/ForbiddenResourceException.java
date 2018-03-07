@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @since 28.02.18
  */
 @ResponseStatus(HttpStatus.FORBIDDEN)
-public class ForbiddenResourceExceprion extends RuntimeException {
-    public ForbiddenResourceExceprion(String message) {
+public class ForbiddenResourceException extends RuntimeException {
+    public ForbiddenResourceException(String message) {
         super(message);
     }
 }

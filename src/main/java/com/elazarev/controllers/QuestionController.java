@@ -62,7 +62,7 @@ public class QuestionController {
     public String viewQuestion(@PathVariable Long id, Model model, Principal principal) throws Exception {
         Question question = questionService.getById(id);
         model.addAttribute("question", question);
-        model.addAttribute("addSolutionButton", userService.isQuestionOfUser(question, principal));
+        model.addAttribute("addSolutionButton", userService.isUsersQuestion(question, principal));
 
         return "/question/details";
     }

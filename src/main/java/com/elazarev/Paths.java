@@ -18,12 +18,12 @@ public class Paths {
     public static final String PATH_QUESTIONS_ANSWER_ADD = "/questions/answer";
     public static final String PATH_QUESTIONS_ANSWER_LIKE = "/questions/answer/like";
     public static final String PATH_QUESTIONS_ANSWER_SOLUTION = "/questions/answer/solution";
-    public static final String PATH_QUESTIONS_SUBSCRIBE = "/questions/subscribe";
+    public static final String PATH_QUESTIONS_SUBSCRIBE = "/questions/subscribeToTag";
 
     // tag controller
     public static final String PATH_TAGS_ALL = "/tags";
     public static final String PATH_TAGS_SHOW = "/tags/{name}";
-    public static final String PATH_TAGS_SUBSCRIBE = "/tags/subscribe/{name}";
+    public static final String PATH_TAGS_SUBSCRIBE = "/tags/subscribeToTag/{name}";
 
     // user controller
     public static final String PATH_USERS_ALL = "/users";
