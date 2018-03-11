@@ -1,69 +1,98 @@
 package com.elazarev.domain;
 
-import com.elazarev.security.RegisterUserForm;
-import com.elazarev.security.WebSecurityConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
+ * Application user model.
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
  * @since 14.02.18
  */
 @Entity(name = "users")
 public class User implements UserDetails {
-
+    /**
+     * Unique identificator.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    /**
+     * User login.
+     */
     @Column(name = "login", nullable = false)
     private String login;
-
+    /**
+     * User password.
+     */
     @Column(name = "password", nullable = false)
     private String password;
-
+    /**
+     * User email.
+     */
     @Column(name = "email", nullable = false)
     private String email;
-
+    /**
+     * First name.
+     */
     @Column(name = "fname")
     private String firstName;
-
+    /**
+     * Last name.
+     */
     @Column(name = "lname")
     private String lastName;
-
+    /**
+     * Short text about user.
+     */
     @Column(name = "about")
     private String about;
-
+    /**
+     * Users profile photo.
+     */
     @Column(name = "photo_url")
     private String photoUrl;
-
+    /**
+     * Is user locked.
+     */
     @Column(name = "baned", nullable = false)
     private Boolean baned;
-
+    /**
+     * Set of users roles.
+     */
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-
+    /**
+     * Tags on which user subscribed.
+     */
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_tags", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags = new HashSet<>();
-
+    /**
+     * Questions on which user subscribed.
+     */
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_subscription", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "question_id"))
     private Set<Question> subscriptions = new HashSet<>();
-
+    /**
+     * Users answers.
+     */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author", fetch = FetchType.EAGER)
     private Set<Answer> answers = new HashSet<>();
-
+    /**
+     * Users questions.
+     */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author", fetch = FetchType.EAGER)
     private Set<Question> questions = new HashSet<>();
 
+    /**
+     * Empty constructor.
+     */
     public User() {
     }
 

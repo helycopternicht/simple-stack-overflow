@@ -4,7 +4,6 @@ import com.elazarev.domain.Answer;
 import com.elazarev.domain.Question;
 import com.elazarev.domain.Tag;
 import com.elazarev.domain.User;
-import com.elazarev.exceptions.NotAcceptableResource;
 import com.elazarev.exceptions.ResourceNotFoundException;
 import com.elazarev.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;

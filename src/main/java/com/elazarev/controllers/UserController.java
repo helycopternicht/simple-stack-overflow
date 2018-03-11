@@ -14,18 +14,31 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
+ * Controller for users related endpoints.
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
  * @since 21.02.18
  */
 @Controller
 public class UserController {
-
+    /**
+     * User service.
+     */
     private UserService userService;
 
+    /**
+     * Controller with all dependencies.
+     * @param userService user service.
+     */
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Shows all users paged.
+     * @param model model.
+     * @param page page number.
+     * @return view name.
+     */
     @GetMapping(Paths.PATH_USERS_ALL)
     public String index(Model model, @RequestParam Optional<Integer> page) {
 
@@ -39,6 +52,12 @@ public class UserController {
         return "user/users";
     }
 
+    /**
+     * Shows user details.
+     * @param model model.
+     * @param name user name.
+     * @return view name.
+     */
     @GetMapping(Paths.PATH_USERS_SHOW)
     public String details(Model model, @PathVariable String name) {
         model.addAttribute("user", userService.findByLogin(name));

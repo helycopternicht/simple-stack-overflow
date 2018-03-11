@@ -14,13 +14,17 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 /**
+ * Main application class. Used also as configuration for some bean.
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
  * @since 13.02.18
  */
 @SpringBootApplication
 @Component
 public class Application {
-
+    /**
+     * Starts application.
+     * @param args
+     */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
