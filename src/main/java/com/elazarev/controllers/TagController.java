@@ -80,7 +80,6 @@ public class TagController {
     @GetMapping(Paths.PATH_TAGS_SUBSCRIBE)
     public String subscribe(@PathVariable String name, Principal principal, Model model) {
         userService.subscribeToTag(principal, name);
-        model.addAttribute("tag", tagService.getTagByName(name));
         return "redirect:"+Paths.PATH_TAGS_SHOW.replace("{name}", name);
     }
 }

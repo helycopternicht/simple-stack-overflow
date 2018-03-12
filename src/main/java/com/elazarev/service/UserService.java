@@ -88,7 +88,7 @@ public class UserService {
     public Page<User> getPage(Optional<Integer> page) throws ResourceNotFoundException {
         Pageable p = PageRequest.of(page.orElse(1) - 1, MAX_USERS_PER_PAGE, Sort.Direction.DESC, "id");
         Page<User> currentPage = repo.findAll(p);
-        if (currentPage.hasContent()) {
+        if (!currentPage.hasContent()) {
             throw new ResourceNotFoundException("page not found");
         }
         return currentPage;
