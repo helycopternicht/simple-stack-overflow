@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ResponseStatus(HttpStatus.FORBIDDEN)
 public class ForbiddenResourceException extends RuntimeException {
+    /**
+     * Constructor with message.
+     * @param message massage for user.
+     */
     public ForbiddenResourceException(String message) {
         super(message);
     }

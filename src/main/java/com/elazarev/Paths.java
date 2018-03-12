@@ -1,6 +1,7 @@
 package com.elazarev;
 
 /**
+ * Class to contain all paths in app.
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
  * @since 28.02.18
  */

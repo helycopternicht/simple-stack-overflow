@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * An Answer to a question model. 
+ * An Answer to a question model.
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
  * @since 14.02.18
  */

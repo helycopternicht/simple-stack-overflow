@@ -96,6 +96,11 @@ public class User implements UserDetails {
     public User() {
     }
 
+    /**
+     * Returns true if user subscribed to specified tag.
+     * @param t tag to check.
+     * @return true or false.
+     */
     public boolean subscribedToTag(Tag t) {
         for (Tag tag : tags) {
             if (tag.equals(t)) {
@@ -105,149 +110,289 @@ public class User implements UserDetails {
         return false;
     }
 
+    /**
+     * Getter for id field.
+     * @return id.
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Setter for id field.
+     * @param id new id.
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Getter for login field.
+     * @return login.
+     */
     public String getLogin() {
         return login;
     }
 
+    /**
+     * Setter for id field.
+     * @param login new login.
+     */
     public void setLogin(String login) {
         this.login = login;
     }
 
+    /**
+     * Returns collections of sers roles.
+     * @return roles.
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
     }
 
+    /**
+     * Getter for password field.
+     * @return password.
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Setter for password field.
+     * @param password new password.
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * Getter for email field.
+     * @return email.
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Setter for email field.
+     * @param email new email.
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Getter for first name field.
+     * @return first name.
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * Setter for first name field.
+     * @param firstName new first name.
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * Getter for last name field.
+     * @return last name.
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * Setter for last name field.
+     * @param lastName new last name.
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * Getter for about field.
+     * @return about.
+     */
+    public String getAbout() {
+        return about;
+    }
+
+    /**
+     * Setter for about field.
+     * @param about new about.
+     */
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    /**
+     * Getter for photo url field.
+     * @return photo url.
+     */
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    /**
+     * Setter for photo url field.
+     * @param photoUrl new photo url.
+     */
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    /**
+     * Getter for banned field.
+     * @return banned.
+     */
+    public Boolean getBaned() {
+        return baned;
+    }
+
+    /**
+     * Setter for banned field.
+     * @param baned banned.
+     */
+    public void setBaned(Boolean baned) {
+        this.baned = baned;
+    }
+
+    /**
+     * Getter for roles field.
+     * @return roles.
+     */
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    /**
+     * Setter for roles field.
+     * @param roles new roles.
+     */
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    /**
+     * Getter for tags field.
+     * @return tags.
+     */
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    /**
+     * Setter for tags field.
+     * @param tags new tags.
+     */
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+    /**
+     * Getter for answers field.
+     * @return answers.
+     */
+    public Set<Answer> getAnswers() {
+        return answers;
+    }
+
+    /**
+     * Setter for answers field.
+     * @param answers new asnwers.
+     */
+    public void setAnswers(Set<Answer> answers) {
+        this.answers = answers;
+    }
+
+    /**
+     * Getter for subscriptions field.
+     * @return subscriptions.
+     */
+    public Set<Question> getSubscriptions() {
+        return subscriptions;
+    }
+
+    /**
+     * Setter for subscriptions field.
+     * @param subscriptions new subscriptions.
+     */
+    public void setSubscriptions(Set<Question> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    /**
+     * Getter for questions field.
+     * @return questions.
+     */
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    /**
+     * Setter for questions field.
+     * @param questions new questions.
+     */
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
+
+    /**
+     * Returns login.
+     * @return login.
+     */
     @Override
     public String getUsername() {
         return login;
     }
 
+    /**
+     * Returns true if user isn't banned.
+     * @return true of false.
+     */
     @Override
     public boolean isAccountNonExpired() {
         return !baned;
     }
 
+    /**
+     * Returns true if user isn't banned.
+     * @return true of false.
+     */
     @Override
     public boolean isAccountNonLocked() {
         return !baned;
     }
 
+    /**
+     * Returns true if user isn't banned.
+     * @return true of false.
+     */
     @Override
     public boolean isCredentialsNonExpired() {
         return !baned;
     }
 
+    /**
+     * Returns true if user isn't banned.
+     * @return true of false.
+     */
     @Override
     public boolean isEnabled() {
         return !baned;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getAbout() {
-        return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
-    }
-
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-
-    public Boolean getBaned() {
-        return baned;
-    }
-
-    public void setBaned(Boolean baned) {
-        this.baned = baned;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public Set<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
-    }
-
-
-    public Set<Answer> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(Set<Answer> answers) {
-        this.answers = answers;
-    }
-
-    public Set<Question> getSubscriptions() {
-        return subscriptions;
-    }
-
-    public void setSubscriptions(Set<Question> subscriptions) {
-        this.subscriptions = subscriptions;
-    }
-
-    public Set<Question> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(Set<Question> questions) {
-        this.questions = questions;
-    }
-
+    /**
+     * Equals method based on id.
+     * @param o object to compare.
+     * @return true if objects are equals.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -258,11 +403,19 @@ public class User implements UserDetails {
         return getId() != null ? getId().equals(user.getId()) : user.getId() == null;
     }
 
+    /**
+     * Hash code method based on id.
+     * @return hash code.
+     */
     @Override
     public int hashCode() {
         return getId() != null ? getId().hashCode() : 0;
     }
 
+    /**
+     * Ti string method.
+     * @return string representations of user based on login.
+     */
     @Override
     public String toString() {
         return "@" + this.login;

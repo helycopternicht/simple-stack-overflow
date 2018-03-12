@@ -5,6 +5,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
+ * Repository for complaints table.
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
  * @since 14.02.18
  */

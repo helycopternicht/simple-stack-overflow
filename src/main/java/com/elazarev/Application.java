@@ -29,7 +29,11 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-    // for thymeleaf works with datetime API
+    /**
+     * Used for thymeleaf, when works with datetime API.
+     * @param templateResolver template resolver.
+     * @return template engine.
+     */
     @Bean
     public TemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
@@ -37,7 +41,11 @@ public class Application {
         engine.setTemplateResolver(templateResolver);
         return engine;
     }
-    // for security works with thymeleaf
+
+    /**
+     * Used when thymeleaf should know current user.
+     * @return
+     */
     @Bean
     public SpringSecurityDialect springSecurityDialect(){
         return new SpringSecurityDialect();

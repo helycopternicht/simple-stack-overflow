@@ -6,6 +6,10 @@ package com.elazarev.exceptions;
  * @since 20.02.18
  */
 public class UserAlreadyExistsException extends RuntimeException {
+    /**
+     * Constructor with message.
+     * @param message massage for user.
+     */
     public UserAlreadyExistsException(String message) {
         super(message);
     }

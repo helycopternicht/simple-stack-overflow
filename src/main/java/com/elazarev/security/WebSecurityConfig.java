@@ -14,16 +14,24 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
+ * Spring security configuration class.
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
  * @since 17.02.18
  */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    /**
+     * User service.
+     */
     @Autowired
     private UserService userService;
 
+    /**
+     * Configures unsecured and secured endpoints. Also specifies login and logout urls.
+     * @param http configuration element.
+     * @throws Exception if error ocur.
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -52,6 +60,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().accessDeniedPage("/login");
     }
 
+    /**
+     * UserDetailsService bean.
+     * @return service based on user domain.
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return s -> {
@@ -63,6 +75,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         };
     }
 
+    /**
+     * Password encoder bean using to encode user passwords by {@link BCryptPasswordEncoder}.
+     * @return encoder.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
