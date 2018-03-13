@@ -73,13 +73,12 @@ public class TagController {
     /**
      * Subscribe user to tag.
      * @param name tag name.
-     * @param principal curren user.
-     * @param model model.
+     * @param principal current user.
      * @return redirect to tag details.
      */
     @GetMapping(Paths.PATH_TAGS_SUBSCRIBE)
-    public String subscribe(@PathVariable String name, Principal principal, Model model) {
+    public String subscribe(@PathVariable String name, Principal principal) {
         userService.subscribeToTag(principal, name);
-        return "redirect:"+Paths.PATH_TAGS_SHOW.replace("{name}", name);
+        return "redirect:" + Paths.PATH_TAGS_SHOW.replace("{name}", name);
     }
 }

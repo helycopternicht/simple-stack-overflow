@@ -1,18 +1,16 @@
 package com.elazarev.controllers;
 
 import com.elazarev.Paths;
-import com.elazarev.domain.Question;
 import com.elazarev.domain.User;
-import com.elazarev.exceptions.ResourceNotFoundException;
-import com.elazarev.security.RegisterUserForm;
 import com.elazarev.service.QuestionService;
 import com.elazarev.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.Optional;
