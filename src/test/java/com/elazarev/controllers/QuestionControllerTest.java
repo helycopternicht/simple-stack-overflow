@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
+ * Test class for QuestionController.
  * @author Eugene Lazarev mailto(helycopternicht@rambler.ru)
  * @since 13.03.18
  */
@@ -39,19 +40,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class QuestionControllerTest {
-
+    /**
+     * MVC mock.
+     */
     @Autowired
     private MockMvc mockMvc;
-
+    /**
+     * Question service mock.
+     */
     @MockBean
     private QuestionService questionService;
-
+    /**
+     * User service mock.
+     */
     @MockBean
     private UserService userService;
 
+    /**
+     * AllQuestions method test.
+     * @throws Exception if error occur.
+     */
     @Test
     public void allQuestions() throws Exception {
-
         User user = new User();
         user.setLogin("admin");
 
@@ -75,6 +85,10 @@ public class QuestionControllerTest {
         verify(questionService).getQuestionPaged(any());
     }
 
+    /**
+     * Search method test.
+     * @throws Exception if error occur.
+     */
     @Test
     public void search() throws Exception {
         User user = new User();
@@ -104,6 +118,10 @@ public class QuestionControllerTest {
         verify(questionService).searchPage(anyString(), eq(Optional.empty()));
     }
 
+    /**
+     * ViewQuestion method test.
+     * @throws Exception if error occur.
+     */
     @Test
     @WithMockUser
     public void viewQuestion() throws Exception {
@@ -124,6 +142,10 @@ public class QuestionControllerTest {
                 .andExpect(view().name("/question/details"));
     }
 
+    /**
+     * ShowAddForm method test.
+     * @throws Exception if error occur.
+     */
     @Test
     public void showAddForm() throws Exception {
         mockMvc.perform(get(Paths.PATH_QUESTIONS_ADD))
@@ -131,6 +153,10 @@ public class QuestionControllerTest {
                 .andExpect(view().name("/question/new"));
     }
 
+    /**
+     * CreateQuestions method test.
+     * @throws Exception if error occur.
+     */
     @Test
     @WithMockUser
     public void createQuestion() throws Exception {
@@ -148,6 +174,10 @@ public class QuestionControllerTest {
         verify(questionService).createQuestion(eq("title"), eq("desc"), eq("tag"), any(Principal.class));
     }
 
+    /**
+     * AddAnswer method test.
+     * @throws Exception if error occur.
+     */
     @Test
     @WithMockUser
     public void addAnswer() throws Exception {
@@ -162,16 +192,56 @@ public class QuestionControllerTest {
         verify(questionService).createAnswer(eq(100L), eq("text"), any(Principal.class));
     }
 
+    /**
+     * Subscribe method test.
+     * @throws Exception if error occur.
+     */
     @Test
+    @WithMockUser
     public void subscribe() throws Exception {
+        String questionId = "9087";
+        mockMvc.perform(post(Paths.PATH_QUESTIONS_SUBSCRIBE)
+                .with(csrf())
+                .param("question_id", questionId))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(Paths.PATH_QUESTIONS_SHOW.replace("{id}", questionId)));
+
+        verify(questionService).subscribe(eq(Long.valueOf(questionId)), any(Principal.class));
     }
 
+    /**
+     * Like method test.
+     * @throws Exception if error occur.
+     */
     @Test
+    @WithMockUser
     public void like() throws Exception {
+        String questionId = "88876";
+        mockMvc.perform(post(Paths.PATH_QUESTIONS_ANSWER_LIKE)
+                .with(csrf())
+                .param("answer_id", "123")
+                .param("question_id", questionId))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(Paths.PATH_QUESTIONS_SHOW.replace("{id}", questionId)));
+
+        verify(questionService).likeAnswer(any(Principal.class), eq(Long.valueOf("123")));
     }
 
+    /**
+     * Solution method test.
+     * @throws Exception if error occur.
+     */
     @Test
+    @WithMockUser
     public void solution() throws Exception {
-    }
+        String questionId = "88876";
+        mockMvc.perform(post(Paths.PATH_QUESTIONS_ANSWER_SOLUTION)
+                .with(csrf())
+                .param("answer_id", "123")
+                .param("question_id", questionId))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(Paths.PATH_QUESTIONS_SHOW.replace("{id}", questionId)));
 
+        verify(questionService).markAsSolution(any(Principal.class), eq(Long.valueOf("123")));
+    }
 }
